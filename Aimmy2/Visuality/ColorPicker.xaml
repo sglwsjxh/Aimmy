@@ -5,7 +5,7 @@
         xmlns:uilib="clr-namespace:Aimmy2.UILibrary"
         xmlns:theme="clr-namespace:Aimmy2.Theme"
         theme:ThemeBehavior.AutoRegister="True"
-        Title="OVERLAY Color Picker"
+        Title="浮层颜色选择器"
         Height="405"
         Width="300"
         WindowStartupLocation="CenterScreen"

@@ -59,7 +59,7 @@ namespace Aimmy2
                 await PreloadMainWindowAsync();
                 await Task.Delay(2000);
 
-                await Dispatcher.InvokeAsync(() => LoadingText.Text = "LAUNCHING INTERFACE");
+                await Dispatcher.InvokeAsync(() => LoadingText.Text = "正在启动界面");
                 await Task.Delay(500);
                 await StartSmoothTransition();
             }

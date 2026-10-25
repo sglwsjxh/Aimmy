@@ -16,7 +16,7 @@ namespace Aimmy2.UILibrary
     {
         public static readonly DependencyProperty TitleProperty =
         DependencyProperty.Register("Title", typeof(string), typeof(AColorWheel),
-            new PropertyMetadata("Theme Color", OnTitleChanged));
+            new PropertyMetadata("主题色", OnTitleChanged));
 
         public static readonly DependencyProperty ShowArrowProperty =
         DependencyProperty.Register(
@@ -516,7 +516,7 @@ namespace Aimmy2.UILibrary
                     }
                     else
                     {
-                        new NoticeBar("Error: Only PNG/JPG/JPEG images are supported", 3000).Show();
+                        new NoticeBar("错误：仅支持 PNG/JPG/JPEG 图片", 3000).Show();
                     }
 
                     e.Handled = true;
@@ -576,7 +576,7 @@ namespace Aimmy2.UILibrary
             catch
             {
                 DropHintText.Visibility = Visibility.Visible;
-                DropHintText.Text = "Invalid Media File";
+                DropHintText.Text = "媒体文件无效";
                 DropZone.Background = Brushes.Transparent;
             }
         }
@@ -762,7 +762,7 @@ namespace Aimmy2.UILibrary
                 if (DropHintText != null)
                 {
                     DropHintText.Visibility = Visibility.Visible;
-                    DropHintText.Text = "Drag & Drop Media Here";
+                    DropHintText.Text = "拖放媒体文件到此处";
                 }
                 _mediaBrightness = 1.0;
                 if (BrightnessMediaSlider != null) BrightnessMediaSlider.Value = 1.0;
@@ -771,7 +771,7 @@ namespace Aimmy2.UILibrary
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error clearing media: {ex.Message}");
+                MessageBox.Show($"清除媒体背景失败：{ex.Message}");
             }
         }
 

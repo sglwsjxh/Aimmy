@@ -57,7 +57,7 @@
                            Padding="0,0,0,0"
                            FontSize="14"
                            FontFamily="Segoe MDL2 Assets" />
-                    <Label Content="LG Downloader"
+                    <Label Content="LG 下载器"
                            HorizontalAlignment="Left"
                            Margin="38,0,0,0"
                            VerticalAlignment="Center"
@@ -81,7 +81,7 @@
                 </Grid>
                 <Grid x:Name="Grid1"
                       Margin="0,50,0,0">
-                    <Label Content="Please click on a button below to download LG Hub."
+                    <Label Content="请点击下方按钮下载 LG Hub。"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Top"
                            Foreground="#DDFFFFFF"

@@ -44,7 +44,7 @@ namespace Other
 
             if (string.IsNullOrEmpty(latestVersion) || string.IsNullOrEmpty(latestZipUrl))
             {
-                LogManager.Log(LogManager.LogLevel.Error, "Failed to get latest release information from Github.", true);
+                LogManager.Log(LogManager.LogLevel.Error, "无法从 Github 获取最新版本信息。", true);
                 return;
             }
 
@@ -53,17 +53,17 @@ namespace Other
 
             if (comparison == 0)
             {
-                LogManager.Log(LogManager.LogLevel.Info, "You are up to date.", true);
+                LogManager.Log(LogManager.LogLevel.Info, "当前已是最新版本。", true);
                 return;
             }
             else if (comparison > 0)
             {
-                LogManager.Log(LogManager.LogLevel.Info, $"You are running a newer version ({currentVersion}) than the latest release ({latestVersion}).", true);
+                LogManager.Log(LogManager.LogLevel.Info, $"当前版本（{currentVersion}）比最新发布版本（{latestVersion}）更新。", true);
                 return;
             }
 
             // Only update if latest version is newer
-            LogManager.Log(LogManager.LogLevel.Info, $"A new version is available: {latestVersion}. Current version: {currentVersion}.", true);
+            LogManager.Log(LogManager.LogLevel.Info, $"发现新版本：{latestVersion}。当前版本：{currentVersion}。", true);
             githubManager.Dispose();
             await DoUpdate(latestZipUrl);
         }

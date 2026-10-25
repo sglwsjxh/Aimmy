@@ -106,7 +106,7 @@ namespace Aimmy2
             }
             catch (Exception ex)
             {
-                ShowError($"Error during startup: {ex.Message}", ex);
+                ShowError($"启动过程中出错：{ex.Message}", ex);
             }
         }
 
@@ -168,8 +168,8 @@ namespace Aimmy2
             if (Directory.GetCurrentDirectory().Contains("Temp"))
             {
                 MessageBox.Show(
-                    "Hi, it is made aware that you are running Aimmy without extracting it from the zip file. " +
-                    "Please extract Aimmy from the zip file or Aimmy will not be able to run properly.\n\nThank you.",
+                    "检测到您尚未解压就直接运行 Aimmy。 " +
+                    "请先从压缩包中解压 Aimmy，否则程序无法正常运行。\n\n谢谢。",
                     "Aimmy V2");
             }
         }
@@ -306,7 +306,7 @@ namespace Aimmy2
         {
             if (_menuControls["AboutMenu"] is AboutMenuControl aboutMenu)
             {
-                aboutMenu.AboutSpecsControl.Content = "Loading system specs...";
+                aboutMenu.AboutSpecsControl.Content = "正在读取系统信息……";
 
                 Task.Run(() =>
                 {
@@ -318,7 +318,7 @@ namespace Aimmy2
 
         private void ShowError(string message, Exception ex)
         {
-            MessageBox.Show($"{message}\n\nStack trace: {ex.StackTrace}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show($"{message}\n\n堆栈跟踪：{ex.StackTrace}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         private void ApplyThemeGradients()
@@ -402,7 +402,7 @@ namespace Aimmy2
             var manager = FileManager.AIManager;
             if (manager == null || !manager.IsLoaded)
             {
-                LogManager.Log(LogManager.LogLevel.Warning, "Load a model before opening the Performance Helper.", true, 3000);
+                LogManager.Log(LogManager.LogLevel.Warning, "请先加载模型再打开性能助手。", true, 3000);
                 return;
             }
 
@@ -454,7 +454,7 @@ namespace Aimmy2
                 {
                     Dictionary.dropdownState["Image Size"] = newSize;
                     SettingsMenuControlInstance?.UpdateImageSizeDropdown(newSize);
-                    LogManager.Log(LogManager.LogLevel.Info, $"Image size set to {newSize}x{newSize} (no model loaded)", true, 2000);
+                    LogManager.Log(LogManager.LogLevel.Info, $"图像尺寸已设为 {newSize}x{newSize}（未加载模型）", true, 2000);
                     return true;
                 }
 
@@ -485,13 +485,13 @@ namespace Aimmy2
 
                     if (actualSize == newSize)
                     {
-                        LogManager.Log(LogManager.LogLevel.Info, $"Successfully changed image size to {actualSize}x{actualSize}", true, 2000);
+                        LogManager.Log(LogManager.LogLevel.Info, $"图像尺寸已成功切换为 {actualSize}x{actualSize}", true, 2000);
                         return true;
                     }
 
                     LogManager.Log(
                         LogManager.LogLevel.Warning,
-                        $"Model loaded at {actualSize}x{actualSize}; requested {newSize}x{newSize} was not applied.",
+                        $"模型已按 {actualSize}x{actualSize} 加载，请求的 {newSize}x{newSize} 未生效。",
                         true,
                         5000);
                     return false;
@@ -501,7 +501,7 @@ namespace Aimmy2
                 FileManager.AIManager = null;
                 Dictionary.dropdownState["Image Size"] = previousSize;
                 SettingsMenuControlInstance?.UpdateImageSizeDropdown(previousSize);
-                LogManager.Log(LogManager.LogLevel.Error, $"Model could not reload at {newSize}x{newSize}. Restoring {previousSize}x{previousSize}.", true, 5000);
+                LogManager.Log(LogManager.LogLevel.Error, $"模型无法按 {newSize}x{newSize} 重新加载，正在恢复 {previousSize}x{previousSize}。", true, 5000);
 
                 var restoredManager = new AIManager(modelPath);
                 if (await restoredManager.InitializationTask)
@@ -528,7 +528,7 @@ namespace Aimmy2
                     SettingsMenuControlInstance?.UpdateImageSizeDropdown(previousSize);
                 }
 
-                LogManager.Log(LogManager.LogLevel.Error, $"Error changing image size: {ex.Message}", true, 5000);
+                LogManager.Log(LogManager.LogLevel.Error, $"切换图像尺寸失败：{ex.Message}", true, 5000);
                 if (FileManager.AIManager == null &&
                     !string.IsNullOrWhiteSpace(modelPath) &&
                     File.Exists(modelPath))
@@ -906,16 +906,15 @@ namespace Aimmy2
         {
             var dropdownitem = new ComboBoxItem
             {
-                Content = title,
+                Content = UiText.T(title),
+                Tag = title,
                 Foreground = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0)),
                 FontFamily = TryFindResource("Atkinson Hyperlegible") as FontFamily
             };
 
             dropdownitem.Selected += (s, e) =>
             {
-                var key = dropdown.DropdownTitle.Content?.ToString()
-                        ?? throw new NullReferenceException("dropdown.DropdownTitle.Content.ToString() is null");
-                Dictionary.dropdownState[key] = title;
+                Dictionary.dropdownState[dropdown.TitleKey] = title;
             };
 
             dropdown.DropdownBox.Items.Add(dropdownitem);
@@ -1023,7 +1022,7 @@ namespace Aimmy2
                 if (toggles[i] != null)
                     UpdateToggleUI(toggles[i], false);
             }
-            LogManager.Log(LogManager.LogLevel.Info, "[Emergency Stop Keybind] Disabled all AI features.", true);
+            LogManager.Log(LogManager.LogLevel.Info, "[紧急停止快捷键] 已关闭全部 AI 功能。", true);
         }
 
         #endregion
@@ -1161,7 +1160,7 @@ namespace Aimmy2
             }
             catch (Exception e)
             {
-                MessageBox.Show($"Error loading config, possibly outdated\n{e}");
+                MessageBox.Show($"读取配置失败，配置可能已过期\n{e}");
             }
         }
 
@@ -1173,8 +1172,8 @@ namespace Aimmy2
                 if (suggestedModel != "N/A" && !string.IsNullOrEmpty(suggestedModel))
                 {
                     MessageBox.Show(
-                        $"The creator of this model suggests you use this model:\n{suggestedModel}",
-                        "Suggested Model - Aimmy");
+                        $"该模型的作者建议你使用此模型：\n{suggestedModel}",
+                        "推荐模型 - Aimmy");
                 }
             }
         }
@@ -1292,7 +1291,7 @@ namespace Aimmy2
 
             // Get selected method from actual dropdown selection
             var selectedItem = uiManager.D_PredictionMethod?.DropdownBox?.SelectedItem as ComboBoxItem;
-            string selectedMethod = selectedItem?.Content?.ToString() ?? "";
+            string selectedMethod = UiValue.Of(selectedItem) ?? "";
 
             // Show only the relevant slider based on selected method
             switch (selectedMethod)

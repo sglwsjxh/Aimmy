@@ -21,7 +21,7 @@
             <Grid>
                 <Label x:Name="Title"
                        Foreground="White"
-                       Content="Refresh"
+                       Content="刷新"
                        FontFamily="{StaticResource Atkinson Hyperlegible}"
                        VerticalContentAlignment="Center"
                        Padding="10,0,0,0"

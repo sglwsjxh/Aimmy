@@ -242,7 +242,7 @@ namespace Aimmy2.AILogic
                 }
                 catch (Exception ex)
                 {
-                    Log(LogLevel.Error, $"Error starting the model via DirectML: {ex.Message}\n\nFalling back to CPU, performance may be poor.", true);
+                    Log(LogLevel.Error, $"通过 DirectML 启动模型失败：{ex.Message}\n\n即将回退到 CPU，性能可能较差。", true);
 
                     try
                     {
@@ -252,7 +252,7 @@ namespace Aimmy2.AILogic
                     }
                     catch (Exception e)
                     {
-                        Log(LogLevel.Error, $"Error starting the model via CPU: {e.Message}, you won't be able to aim assist at all.", true);
+                        Log(LogLevel.Error, $"通过 CPU 启动模型失败：{e.Message}，辅助瞄准将无法使用。", true);
                         return false;
                     }
                 }
@@ -348,7 +348,7 @@ namespace Aimmy2.AILogic
                     NUM_DETECTIONS = CalculateNumDetections(IMAGE_SIZE);
                     LoadClasses();
                     ImageSizeUpdated?.Invoke(IMAGE_SIZE);
-                    Log(LogLevel.Info, $"Loaded dynamic model - using selected image size {IMAGE_SIZE}x{IMAGE_SIZE} with {NUM_DETECTIONS} detections", true, 3000);
+                    Log(LogLevel.Info, $"已加载动态模型 - 使用所选图像尺寸 {IMAGE_SIZE}x{IMAGE_SIZE}，检测数 {NUM_DETECTIONS}", true, 3000);
                 }
                 else
                 {
@@ -362,7 +362,7 @@ namespace Aimmy2.AILogic
                     if (!supportedSizes.Contains(fixedSizeStr))
                     {
                         Log(LogLevel.Error,
-                            $"Model requires unsupported size {fixedInputSize}x{fixedInputSize}. Supported sizes are: {string.Join(", ", supportedSizes)}",
+                            $"模型需要不受支持的尺寸 {fixedInputSize}x{fixedInputSize}。支持的尺寸：{string.Join(", ", supportedSizes)}",
                             true, 10000);
                         return false;
                     }
@@ -375,7 +375,7 @@ namespace Aimmy2.AILogic
                     {
                         // Auto-adjust the image size to match the model
                         Log(LogLevel.Warning,
-                            $"Fixed-size model expects {fixedInputSize}x{fixedInputSize}. Automatically adjusting Image Size setting.",
+                            $"固定尺寸模型需要 {fixedInputSize}x{fixedInputSize}，正在自动调整图像尺寸设置。",
                             true, 3000);
 
                         AimSettings.ImageSize = fixedInputSize;
@@ -404,12 +404,12 @@ namespace Aimmy2.AILogic
                     if (!outputMetadata.Values.All(metadata => metadata.Dimensions.SequenceEqual(expectedShape)))
                     {
                         Log(LogLevel.Error,
-                            $"Output shape does not match the expected shape of {string.Join("x", expectedShape)}.\nThis model will not work with Aimmy, please use an YOLOv8 model converted to ONNXv8.",
+                            $"输出形状与预期形状 {string.Join("x", expectedShape)} 不匹配。\n该模型无法在 Aimmy 中运行，请使用转换为 ONNXv8 的 YOLOv8 模型。",
                             true, 10000);
                         return false;
                     }
 
-                    Log(LogLevel.Info, $"Loaded fixed-size model: {fixedInputSize}x{fixedInputSize}", true, 2000);
+                    Log(LogLevel.Info, $"已加载固定尺寸模型：{fixedInputSize}x{fixedInputSize}", true, 2000);
                 }
 
                 // Notify UI about dynamic model status
@@ -450,18 +450,18 @@ namespace Aimmy2.AILogic
                     }
                     else
                     {
-                        Log(LogLevel.Error, "Model metadata 'names' field is not a valid JSON object.", true);
+                        Log(LogLevel.Error, "模型元数据的 'names' 字段不是有效的 JSON 对象。", true);
                     }
                 }
                 else
                 {
-                    Log(LogLevel.Error, "Model metadata does not contain 'names' field for classes.", true);
+                    Log(LogLevel.Error, "模型元数据中缺少用于类别的 'names' 字段。", true);
                 }
                 ClassesUpdated?.Invoke(new Dictionary<int, string>(_modelClasses));
             }
             catch (Exception ex)
             {
-                Log(LogLevel.Error, $"Error loading classes: {ex.Message}", true);
+                Log(LogLevel.Error, $"加载类别失败：{ex.Message}", true);
             }
         }
 
@@ -594,7 +594,7 @@ namespace Aimmy2.AILogic
             }
             catch (Exception ex)
             {
-                Log(LogLevel.Error, $"AI loop stopped: {ex.Message}", true, 5000);
+                Log(LogLevel.Error, $"AI 循环已停止：{ex.Message}", true, 5000);
             }
         }
 
@@ -993,7 +993,7 @@ namespace Aimmy2.AILogic
 
                 if (outputTensor == null)
                 {
-                    Log(LogLevel.Error, "Model inference returned null output tensor.", true, 2000);
+                    Log(LogLevel.Error, "模型推理返回了空的输出张量。", true, 2000);
                     SaveFrame(frame);
                     return null;
                 }
@@ -1124,7 +1124,7 @@ namespace Aimmy2.AILogic
             PerformanceGoal goal = PerformanceGoal.Balanced)
         {
             if (!IsLoaded)
-                throw new InvalidOperationException("Load a model before running the performance helper.");
+                throw new InvalidOperationException("请先加载模型再运行性能助手。");
 
             int originalImageSize = IMAGE_SIZE;
             int originalDetections = NUM_DETECTIONS;
@@ -1231,7 +1231,7 @@ namespace Aimmy2.AILogic
                 catch (Exception ex)
                 {
                     restoreException = ex;
-                    Log(LogLevel.Error, $"Performance helper could not restore the model session: {ex.Message}", true, 5000);
+                    Log(LogLevel.Error, $"性能助手无法恢复模型会话：{ex.Message}", true, 5000);
                 }
                 finally
                 {
@@ -1274,7 +1274,7 @@ namespace Aimmy2.AILogic
             if (restoreException != null)
             {
                 throw new InvalidOperationException(
-                    "Performance helper could not restore the model session. Reload the model before applying settings.",
+                    "性能助手无法恢复模型会话，请在应用设置前重新加载模型。",
                     restoreException);
             }
 
@@ -1381,7 +1381,7 @@ namespace Aimmy2.AILogic
 
             if (_onnxModel == null || _outputNames == null)
             {
-                throw new InvalidOperationException("Original model session was unavailable after benchmark.");
+                throw new InvalidOperationException("性能测试后无法恢复原始模型会话。");
             }
         }
 

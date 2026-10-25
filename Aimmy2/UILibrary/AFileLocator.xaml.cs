@@ -18,7 +18,7 @@ namespace UILibrary
         public AFileLocator(string title, string dictionary_path, string FileFilter = "All files (*.*)|*.*", string DLExtension = "")
         {
             InitializeComponent();
-            DropdownTitle.Content = title;
+            DropdownTitle.Content = UiText.T(title);
 
             main_dictionary_path = dictionary_path;
             FileLocationTextbox.Text = Dictionary.filelocationState[main_dictionary_path];

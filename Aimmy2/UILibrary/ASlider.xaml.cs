@@ -1,4 +1,5 @@
-﻿using Aimmy2.Theme;
+﻿using Aimmy2.Class;
+using Aimmy2.Theme;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -17,7 +18,7 @@ namespace Aimmy2.UILibrary
             InitializeComponent();
 
             _notifierText = NotifierText;
-            SliderTitle.Content = Text;
+            SliderTitle.Content = UiText.T(Text);
 
             if (!string.IsNullOrEmpty(tooltip))
             {
@@ -56,7 +57,7 @@ namespace Aimmy2.UILibrary
 
         private void UpdateNotifier()
         {
-            AdjustNotifier.Content = _valueFormatter?.Invoke(Slider.Value) ?? $"{Slider.Value:F2} {_notifierText}";
+            AdjustNotifier.Content = _valueFormatter?.Invoke(Slider.Value) ?? $"{Slider.Value:F2} {UiText.T(_notifierText)}";
         }
 
         private void Slider_MouseUp(object sender, MouseButtonEventArgs e)

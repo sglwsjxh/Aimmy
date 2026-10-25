@@ -7,7 +7,7 @@
         xmlns:theme="clr-namespace:Aimmy2.Theme"
         theme:ThemeBehavior.AutoRegister="True"
         mc:Ignorable="d"
-        Title="Aimmy Performance Helper"
+        Title="Aimmy 性能助手"
         Height="178"
         Width="460"
         WindowStyle="None"
@@ -113,7 +113,7 @@
                                        Foreground="#DDFFFFFF"
                                        FontSize="14"
                                        FontFamily="{StaticResource Atkinson Hyperlegible}"/>
-                            <TextBlock Text="Performance Helper"
+                            <TextBlock Text="性能助手"
                                        Foreground="#88FFFFFF"
                                        FontSize="12"
                                        FontFamily="{StaticResource Atkinson Hyperlegible}"
@@ -143,13 +143,13 @@
                             Margin="16,0,16,0">
                         <StackPanel VerticalAlignment="Center">
                             <TextBlock x:Name="MiniPromptTitle"
-                                       Text="Run Performance Helper?"
+                                       Text="运行性能助手？"
                                        Foreground="White"
                                        FontFamily="{StaticResource Atkinson Hyperlegible}"
                                        FontWeight="SemiBold"
                                        FontSize="14"/>
                             <TextBlock x:Name="MiniPromptSubtitle"
-                                       Text="Benchmark Aimmy once and get a size + FPS cap for this PC."
+                                       Text="为这台电脑做一次性能测试，给出尺寸和帧率上限。"
                                        Foreground="#A8FFFFFF"
                                        FontFamily="{StaticResource Atkinson Hyperlegible}"
                                        FontSize="12"
@@ -163,7 +163,7 @@
                           Grid.Row="2"
                           Margin="16,0,16,12">
                         <TextBlock x:Name="MiniFooterText"
-                                   Text="Closing will remind you later."
+                                   Text="关闭后稍后会再次提醒。"
                                    Foreground="#88FFFFFF"
                                    FontFamily="{StaticResource Atkinson Hyperlegible}"
                                    FontSize="11"
@@ -174,13 +174,13 @@
                                     VerticalAlignment="Center">
                             <Button x:Name="MiniSkipButton"
                                     Style="{StaticResource HelperButton}"
-                                    Content="No thanks"
+                                    Content="不用了"
                                     Background="#18FFFFFF"
                                     BorderBrush="#26FFFFFF"
                                     Click="MiniSkipButton_Click"/>
                             <Button x:Name="MiniOpenButton"
                                     Style="{StaticResource HelperButton}"
-                                    Content="Run Check"
+                                    Content="开始检查"
                                     Margin="10,0,0,0"
                                     Click="MiniOpenButton_Click"/>
                         </StackPanel>
@@ -214,7 +214,7 @@
                                        Foreground="#DDFFFFFF"
                                        FontSize="14"
                                        FontFamily="{StaticResource Atkinson Hyperlegible}"/>
-                            <TextBlock Text="Performance Helper"
+                            <TextBlock Text="性能助手"
                                        Foreground="#88FFFFFF"
                                        FontSize="12"
                                        FontFamily="{StaticResource Atkinson Hyperlegible}"
@@ -252,7 +252,7 @@
                                     Padding="12"
                                     Margin="0,0,8,0">
                                 <StackPanel>
-                                    <TextBlock Text="Selected Avg FPS" Style="{StaticResource MetricLabel}"/>
+                                    <TextBlock Text="平均帧率" Style="{StaticResource MetricLabel}"/>
                                     <TextBlock x:Name="MaxFpsValue" Text="-" Style="{StaticResource MetricValue}" Margin="0,6,0,0"/>
                                 </StackPanel>
                             </Border>
@@ -263,7 +263,7 @@
                                     Padding="12"
                                     Margin="0,0,8,0">
                                 <StackPanel>
-                                    <TextBlock Text="Avg CPU Load" Style="{StaticResource MetricLabel}"/>
+                                    <TextBlock Text="CPU 占用" Style="{StaticResource MetricLabel}"/>
                                     <TextBlock x:Name="CpuValue" Text="-" Style="{StaticResource MetricValue}" Margin="0,6,0,0"/>
                                 </StackPanel>
                             </Border>
@@ -274,7 +274,7 @@
                                     Padding="12"
                                     Margin="0,0,8,0">
                                 <StackPanel>
-                                    <TextBlock Text="Avg GPU Load" Style="{StaticResource MetricLabel}"/>
+                                    <TextBlock Text="GPU 占用" Style="{StaticResource MetricLabel}"/>
                                     <TextBlock x:Name="GpuValue" Text="-" Style="{StaticResource MetricValue}" Margin="0,6,0,0"/>
                                 </StackPanel>
                             </Border>
@@ -284,7 +284,7 @@
                                     BorderThickness="1"
                                     Padding="12">
                                 <StackPanel>
-                                    <TextBlock Text="Selected Cap" Style="{StaticResource MetricLabel}"/>
+                                    <TextBlock Text="目标上限" Style="{StaticResource MetricLabel}"/>
                                     <TextBlock x:Name="CapValue" Text="-" Style="{StaticResource MetricValue}" Margin="0,6,0,0"/>
                                 </StackPanel>
                             </Border>
@@ -303,19 +303,19 @@
                                             <ColumnDefinition Width="0.95*"/>
                                         </Grid.ColumnDefinitions>
                                         <StackPanel>
-                                            <TextBlock Text="Quick full-speed check"
+                                            <TextBlock Text="快速全速测试"
                                                        Foreground="White"
                                                        FontFamily="{StaticResource Atkinson Hyperlegible}"
                                                        FontSize="17"
                                                        FontWeight="SemiBold"/>
-                                            <TextBlock Text="Aimmy will test image sizes, then recommend a size + FPS cap for your goal. Lower image size can cut resource use, but can lose detail on small targets."
+                                            <TextBlock Text="Aimmy 会逐一测试不同图像尺寸，再按你的目标推荐尺寸和帧率上限。尺寸越小越省资源，但小目标可能丢失细节。"
                                                        Foreground="#BFFFFFFF"
                                                        FontFamily="{StaticResource Atkinson Hyperlegible}"
                                                        FontSize="12"
                                                        TextWrapping="Wrap"
                                                        LineHeight="18"
                                                        Margin="0,10,22,0"/>
-                                            <TextBlock Text="WHAT DO YOU WANT?"
+                                            <TextBlock Text="你更看重什么？"
                                                        Foreground="#88FFFFFF"
                                                        FontFamily="{StaticResource Atkinson Hyperlegible}"
                                                        FontSize="10"
@@ -324,24 +324,24 @@
                                                          Margin="0,0,22,0">
                                                 <Button x:Name="FastestGoalButton"
                                                         Style="{StaticResource GoalButton}"
-                                                        Content="Fastest"
+                                                        Content="极速"
                                                         Tag="FastestDetections"
                                                         Margin="0,0,6,0"
-                                                        ToolTip="Freshest detections. Uses more CPU/GPU."
+                                                        ToolTip="检测最新鲜，但更吃 CPU/GPU。"
                                                         Click="GoalButton_Click"/>
                                                 <Button x:Name="BalancedGoalButton"
                                                         Style="{StaticResource GoalButton}"
-                                                        Content="Balanced"
+                                                        Content="均衡"
                                                         Tag="Balanced"
                                                         Margin="3,0,3,0"
-                                                        ToolTip="Good detection speed with reasonable load."
+                                                        ToolTip="检测速度不错，占用也合理。"
                                                         Click="GoalButton_Click"/>
                                                 <Button x:Name="LowestGoalButton"
                                                         Style="{StaticResource GoalButton}"
-                                                        Content="Lowest"
+                                                        Content="最低占用"
                                                         Tag="LowestResources"
                                                         Margin="6,0,0,0"
-                                                        ToolTip="Lowest CPU/GPU use while staying near 60 FPS, or 30 FPS if needed."
+                                                        ToolTip="尽量省 CPU/GPU，帧率保持在 60 附近，必要时降到 30。"
                                                         Click="GoalButton_Click"/>
                                             </UniformGrid>
                                         </StackPanel>
@@ -352,26 +352,26 @@
                                                 BorderThickness="1"
                                                 Padding="14">
                                             <StackPanel>
-                                                <TextBlock Text="WHAT HAPPENS"
+                                                <TextBlock Text="测试过程"
                                                            Foreground="#88FFFFFF"
                                                            FontFamily="{StaticResource Atkinson Hyperlegible}"
                                                            FontSize="10"/>
-                                                <TextBlock Text="5s+ warmup + 10s timed AI loop per size"
+                                                <TextBlock Text="每个尺寸预热 5 秒以上，再计时 10 秒"
                                                            Foreground="White"
                                                            FontFamily="{StaticResource Atkinson Hyperlegible}"
                                                            FontSize="13"
                                                            Margin="0,9,0,0"/>
-                                                <TextBlock Text="Mouse movement and clicks stay off"
+                                                <TextBlock Text="不会移动鼠标，也不会点击"
                                                            Foreground="White"
                                                            FontFamily="{StaticResource Atkinson Hyperlegible}"
                                                            FontSize="13"
                                                            Margin="0,7,0,0"/>
-                                                <TextBlock Text="Fastest, Balanced, and Lowest Resource picks are labeled"
+                                                <TextBlock Text="极速、均衡、最低占用三种方案都会标注"
                                                            Foreground="White"
                                                            FontFamily="{StaticResource Atkinson Hyperlegible}"
                                                            FontSize="13"
                                                            Margin="0,7,0,0"/>
-                                                <TextBlock Text="No training frames are saved"
+                                                <TextBlock Text="不会保存训练帧"
                                                            Foreground="White"
                                                            FontFamily="{StaticResource Atkinson Hyperlegible}"
                                                            FontSize="13"
@@ -390,13 +390,13 @@
                                         Padding="18">
                                     <StackPanel>
                                         <TextBlock x:Name="ProgressTitle"
-                                                   Text="Preparing benchmark"
+                                                   Text="正在准备性能测试"
                                                    Foreground="White"
                                                    FontFamily="{StaticResource Atkinson Hyperlegible}"
                                                    FontSize="17"
                                                    FontWeight="SemiBold"/>
                                         <TextBlock x:Name="ProgressSubtitle"
-                                                   Text="Starting..."
+                                                   Text="正在启动…"
                                                    Foreground="#BFFFFFFF"
                                                    FontFamily="{StaticResource Atkinson Hyperlegible}"
                                                    FontSize="12"
@@ -466,7 +466,7 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock x:Name="FooterText"
-                                   Text="You can change these later in Model Settings."
+                                   Text="之后可在模型设置里修改。"
                                    Foreground="#78FFFFFF"
                                    FontFamily="{StaticResource Atkinson Hyperlegible}"
                                    FontSize="12"
@@ -477,16 +477,16 @@
                                     VerticalAlignment="Center">
                             <Button x:Name="NoThanksButton"
                                     Style="{StaticResource HelperButton}"
-                                    Content="No Thanks"
+                                    Content="不用了"
                                     Margin="0,0,10,0"
                                     Click="NoThanksButton_Click"/>
                             <Button x:Name="RunTestButton"
                                     Style="{StaticResource HelperButton}"
-                                    Content="Run Test"
+                                    Content="开始测试"
                                     Click="RunTestButton_Click"/>
                             <Button x:Name="ApplyButton"
                                     Style="{StaticResource HelperButton}"
-                                    Content="Apply Settings"
+                                    Content="应用设置"
                                     Margin="10,0,0,0"
                                     Visibility="Collapsed"
                                     Click="ApplyButton_Click"/>

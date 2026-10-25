@@ -1,4 +1,5 @@
-﻿using Other;
+﻿using Aimmy2.Class;
+using Other;
 
 namespace Aimmy2.UILibrary
 {
@@ -10,7 +11,7 @@ namespace Aimmy2.UILibrary
         public AKeyChanger(string Text, string Keybind, string? tooltip = null)
         {
             InitializeComponent();
-            KeyChangerTitle.Content = Text;
+            KeyChangerTitle.Content = UiText.T(Text);
 
             if (!string.IsNullOrEmpty(tooltip))
             {

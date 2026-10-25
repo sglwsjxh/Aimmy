@@ -1,4 +1,6 @@
-﻿namespace Aimmy2.UILibrary
+﻿using Aimmy2.Class;
+
+namespace Aimmy2.UILibrary
 {
     /// <summary>
     /// Interaction logic for APButton.xaml
@@ -8,7 +10,7 @@
         public APButton(string Text, string? tooltip = null, string iconGlyph = "\uE8B0")
         {
             InitializeComponent();
-            ButtonTitle.Content = Text;
+            ButtonTitle.Content = UiText.T(Text);
             IconLabel.Content = iconGlyph;
 
             if (!string.IsNullOrEmpty(tooltip))

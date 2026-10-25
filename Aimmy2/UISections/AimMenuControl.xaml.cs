@@ -167,10 +167,10 @@ namespace Aimmy2.Controls
                         {
                             Dictionary.toggleState["Aim Assist"] = false;
                             _mainWindow.UpdateToggleUI(t, false);
-                            LogManager.Log(LogManager.LogLevel.Warning, "Please load a model first", true);
+                            LogManager.Log(LogManager.LogLevel.Warning, "请先加载模型", true);
                         }
                     };
-                }, tooltip: "Turn aim assist on or off. You must load a model first.")
+                }, tooltip: "开关辅助瞄准。需要先加载模型。")
                 .AddToggle("Constant AI Tracking", t =>
                 {
                     uiManager.T_ConstantAITracking = t;
@@ -190,19 +190,19 @@ namespace Aimmy2.Controls
                             }
                         }
                     };
-                }, tooltip: "Always track targets without holding a key. When off, you must hold the aim keybind.")
+                }, tooltip: "无需按住按键即可持续追踪目标。关闭时需要按住瞄准快捷键。")
                 .AddToggle("Sticky Aim", t => uiManager.T_StickyAim = t,
-                    tooltip: "Lock onto a target until it moves out of range instead of switching targets.")
+                    tooltip: "锁定同一个目标，直到它移出范围才切换。")
                 .AddSlider("Sticky Aim Threshold", "Pixels", 1, 1, 0, 100, s =>
                 {
                     uiManager.S_StickyAimThreshold = s;
                     // Set initial visibility based on toggle state
                     s.Visibility = Dictionary.toggleState["Sticky Aim"]
                         ? Visibility.Visible : Visibility.Collapsed;
-                }, tooltip: "How far a target must move before switching to a new one. Higher = stays locked longer.")
+                }, tooltip: "目标移动多远才切换到新目标。数值越大，锁定越久。")
                 .AddKeyChanger("Aim Keybind", k => uiManager.C_Keybind = k,
-                    tooltip: "The key you hold to activate aim assist.")
-                .AddKeyChanger("Second Aim Keybind", tooltip: "An alternate key to activate aim assist.")
+                    tooltip: "按住这个键来启用辅助瞄准。")
+                .AddKeyChanger("Second Aim Keybind", tooltip: "用于启用辅助瞄准的备用按键。")
                 .AddSeparator();
         }
 
@@ -251,7 +251,7 @@ namespace Aimmy2.Controls
                         if (!await DdxoftMain.Load())
                             await ResetToMouseEvent();
                     };
-                }, tooltip: "How mouse movements are sent. Try different options if aim assist isn't working.")
+                }, tooltip: "鼠标移动的发送方式。辅助瞄准不生效时可以换一个试试。")
                 .AddDropdown("Movement Path", d =>
                 {
                     d.DropdownBox.SelectedIndex = 0;
@@ -261,7 +261,7 @@ namespace Aimmy2.Controls
                     _mainWindow.AddDropdownItem(d, "Linear");
                     _mainWindow.AddDropdownItem(d, "Adaptive");
                     _mainWindow.AddDropdownItem(d, "Perlin Noise");
-                }, tooltip: "The curve style used when moving to a target. Affects how natural the movement looks.")
+                }, tooltip: "移动到目标时的曲线样式，影响移动看起来有多自然。")
                 .AddDropdown("Detection Area Type", d =>
                 {
                     d.DropdownBox.SelectedIndex = -1;
@@ -277,7 +277,7 @@ namespace Aimmy2.Controls
                             Convert.ToInt16((WinAPICaller.ScreenHeight / 2) / WinAPICaller.scalingFactorY) - 320,
                             0, 0);
                     };
-                }, tooltip: "How targets are prioritized. Center screen is best for most games.")
+                }, tooltip: "目标的优先顺序。多数游戏用屏幕中心最好。")
                 .AddDropdown("Aiming Boundaries Alignment", d =>
                 {
                     d.DropdownBox.SelectedIndex = -1;
@@ -285,7 +285,7 @@ namespace Aimmy2.Controls
                     _mainWindow.AddDropdownItem(d, "Center");
                     _mainWindow.AddDropdownItem(d, "Top");
                     _mainWindow.AddDropdownItem(d, "Bottom");
-                }, tooltip: "Where to aim on the detected target box. Center is usually best.");
+                }, tooltip: "在检测到的目标框里瞄准的位置。一般居中最好。");
 
             // Add sliders with validation
             AddConfigSliders(builder, uiManager);
@@ -303,46 +303,46 @@ namespace Aimmy2.Controls
                         var value = s.Slider.Value;
                         if (value >= 0.98)
                             LogManager.Log(LogManager.LogLevel.Warning,
-                                "The Mouse Sensitivity you have set can cause Aimmy to be unable to aim, please decrease if you suffer from this problem", true);
+                                "鼠标灵敏度设得太高可能导致 Aimmy 无法瞄准，出现这个问题请调低", true);
                         else if (value <= 0.1)
                             LogManager.Log(LogManager.LogLevel.Warning,
-                                "The Mouse Sensitivity you have set can cause Aimmy to be unstable to aim, please increase if you suffer from this problem", true);
+                                "鼠标灵敏度设得太低可能导致 Aimmy 瞄准不稳定，出现这个问题请调高", true);
                     };
-                }, tooltip: "How fast the aim moves. Lower = faster and snappier, higher = slower and smoother.")
+                }, tooltip: "准星移动的速度。数值越小越快越干脆，越大越慢越平滑。")
                 .AddSlider("Mouse Jitter", "Jitter", 1, 1, 0, 15, s => uiManager.S_MouseJitter = s,
-                    tooltip: "Adds random small movements to make aim look more human-like.")
+                    tooltip: "加入随机的微小移动，让瞄准看起来更像真人。")
                 .AddToggle("Y Axis Percentage Adjustment", t => uiManager.T_YAxisPercentageAdjustment = t,
-                    tooltip: "Enable the Y Offset (%) slider to adjust aim vertically by percentage.")
+                    tooltip: "启用后可用 Y 偏移（%）滑块按百分比调整垂直瞄准位置。")
                 .AddToggle("X Axis Percentage Adjustment", t => uiManager.T_XAxisPercentageAdjustment = t,
-                    tooltip: "Enable the X Offset (%) slider to adjust aim horizontally by percentage.")
+                    tooltip: "启用后可用 X 偏移（%）滑块按百分比调整水平瞄准位置。")
                 .AddSlider("Y Offset (Up/Down)", "Offset", 1, 1, -150, 150, s =>
                 {
                     uiManager.S_YOffset = s;
                     // Set initial visibility based on toggle state
                     s.Visibility = Dictionary.toggleState["Y Axis Percentage Adjustment"]
                         ? Visibility.Collapsed : Visibility.Visible;
-                }, tooltip: "Move aim point up (negative) or down (positive) in pixels.")
+                }, tooltip: "把瞄准点上移（负值）或下移（正值），单位为像素。")
                 .AddSlider("Y Offset (%)", "Percent", 1, 1, 0, 100, s =>
                 {
                     uiManager.S_YOffsetPercent = s;
                     // Set initial visibility based on toggle state
                     s.Visibility = Dictionary.toggleState["Y Axis Percentage Adjustment"]
                         ? Visibility.Visible : Visibility.Collapsed;
-                }, tooltip: "Move aim point up or down as a percentage of the target box height.")
+                }, tooltip: "按目标框高度的百分比上移或下移瞄准点。")
                 .AddSlider("X Offset (Left/Right)", "Offset", 1, 1, -150, 150, s =>
                 {
                     uiManager.S_XOffset = s;
                     // Set initial visibility based on toggle state
                     s.Visibility = Dictionary.toggleState["X Axis Percentage Adjustment"]
                         ? Visibility.Collapsed : Visibility.Visible;
-                }, tooltip: "Move aim point left (negative) or right (positive) in pixels.")
+                }, tooltip: "把瞄准点左移（负值）或右移（正值），单位为像素。")
                 .AddSlider("X Offset (%)", "Percent", 1, 1, 0, 100, s =>
                 {
                     uiManager.S_XOffsetPercent = s;
                     // Set initial visibility based on toggle state
                     s.Visibility = Dictionary.toggleState["X Axis Percentage Adjustment"]
                         ? Visibility.Visible : Visibility.Collapsed;
-                }, tooltip: "Move aim point left or right as a percentage of the target box width.");
+                }, tooltip: "按目标框宽度的百分比左移或右移瞄准点。");
         }
 
         private void LoadPredictions()
@@ -361,7 +361,7 @@ namespace Aimmy2.Controls
                     };
                 })
                 .AddToggle("Predictions", t => uiManager.T_Predictions = t,
-                    tooltip: "Predict where a moving target will be. Helps track fast-moving targets.")
+                    tooltip: "预测移动目标将要到的位置，便于追踪快速移动的目标。")
                 .AddDropdown("Prediction Method", d =>
                 {
                     d.DropdownBox.SelectedIndex = -1;
@@ -372,27 +372,27 @@ namespace Aimmy2.Controls
 
                     // Update slider visibility when prediction method changes
                     d.DropdownBox.SelectionChanged += (s, e) => _mainWindow?.UpdatePredictionSliderVisibility();
-                }, tooltip: "The algorithm used to predict target movement. Try different ones to see what works best.")
+                }, tooltip: "用于预测目标移动的算法。多试几个看哪个效果好。")
                 .AddSlider("Kalman Lead Time", "Seconds", 0.01, 0.01, 0.02, 0.30, s =>
                 {
                     uiManager.S_KalmanLeadTime = s;
                     // Start collapsed - visibility will be set by LoadDropdownStates
                     s.Visibility = Visibility.Collapsed;
-                }, tooltip: "How far ahead to predict target position. Higher = more prediction, may overshoot.")
+                }, tooltip: "预测目标位置提前多少。数值越大预测越多，可能过头。")
                 .AddSlider("WiseTheFox Lead Time", "Seconds", 0.01, 0.01, 0.02, 0.30, s =>
                 {
                     uiManager.S_WiseTheFoxLeadTime = s;
                     // Start collapsed - visibility will be set by LoadDropdownStates
                     s.Visibility = Visibility.Collapsed;
-                }, tooltip: "How far ahead to predict target position. Higher = more prediction, may overshoot.")
+                }, tooltip: "预测目标位置提前多少。数值越大预测越多，可能过头。")
                 .AddSlider("Shalloe Lead Multiplier", "Frames", 0.5, 0.5, 1, 10, s =>
                 {
                     uiManager.S_ShalloeLeadMultiplier = s;
                     // Start collapsed - visibility will be set by LoadDropdownStates
                     s.Visibility = Visibility.Collapsed;
-                }, tooltip: "How many frames ahead to predict. Higher = more prediction, may overshoot.")
+                }, tooltip: "提前预测多少帧。数值越大预测越多，可能过头。")
                 .AddToggle("EMA Smoothening", t => uiManager.T_EMASmoothing = t,
-                    tooltip: "Smooth out aim movements to reduce jitter and make tracking steadier.")
+                    tooltip: "平滑瞄准动作，减少抖动，让追踪更稳。")
                 .AddSlider("EMA Smoothening", "Amount", 0.01, 0.01, 0.01, 1, s =>
                 {
                     uiManager.S_EMASmoothing = s;
@@ -403,7 +403,7 @@ namespace Aimmy2.Controls
                             MouseManager.smoothingFactor = s.Slider.Value;
                         }
                     };
-                }, tooltip: "How much smoothing to apply. Lower = smoother but slower, higher = faster but jittery.")
+                }, tooltip: "平滑强度。数值越小越平滑但越慢，越大越快但越抖。")
                 .AddSeparator();
         }
 
@@ -419,14 +419,14 @@ namespace Aimmy2.Controls
                     t.Minimize.Click += (s, e) => TogglePanel("Auto Trigger", TriggerBotPanel);
                 })
                 .AddToggle("Auto Trigger", t => uiManager.T_AutoTrigger = t,
-                    tooltip: "Automatically click when a target is detected in your crosshair area.")
+                    tooltip: "目标出现在准星范围内时自动开火。")
                 .AddToggle("Cursor Check", t => uiManager.T_CursorCheck = t,
-                    tooltip: "Only trigger when cursor is directly on target. More accurate but may miss some shots.")
+                    tooltip: "只在光标正对目标时开火。更准，但可能漏掉一些枪。")
                 .AddToggle("Spray Mode", t => uiManager.T_SprayMode = t,
-                    tooltip: "Hold down fire instead of single clicks. Good for automatic weapons.")
+                    tooltip: "按住持续开火，而不是单次点击。适合自动武器。")
                 //.AddToggle("Only When Held", t => uiManager.T_OnlyWhenHeld = t)
                 .AddSlider("Auto Trigger Delay", "Seconds", 0.01, 0.1, 0.01, 1, s => uiManager.S_AutoTriggerDelay = s,
-                    tooltip: "Wait time before firing after detecting a target. Helps avoid accidental shots.")
+                    tooltip: "检测到目标后等待多久才开火，可减少误触发。")
                 .AddSeparator();
         }
 
@@ -442,13 +442,13 @@ namespace Aimmy2.Controls
                     t.Minimize.Click += (s, e) => TogglePanel("FOV Config", FOVConfigPanel);
                 })
                 .AddToggle("FOV", t => uiManager.T_FOV = t,
-                    tooltip: "Show a circle on screen indicating the detection area.")
+                    tooltip: "在屏幕上显示一个圆圈，标出检测区域。")
                 .AddToggle("Dynamic FOV", t => uiManager.T_DynamicFOV = t,
-                    tooltip: "Change FOV size when holding a key. Useful for scoping in.")
+                    tooltip: "按住按键时改变视野大小，方便开镜时使用。")
                 .AddToggle("Third Person Support", t => uiManager.T_ThirdPersonSupport = t,
-                    tooltip: "Adjust FOV position for third-person camera games.")
+                    tooltip: "为第三人称视角游戏调整视野位置。")
                 .AddKeyChanger("Dynamic FOV Keybind", k => uiManager.C_DynamicFOV = k,
-                    tooltip: "The key to hold for switching to the dynamic FOV size.")
+                    tooltip: "按住这个键切换到动态视野大小。")
                 .AddDropdown("FOV Style", d =>
                 {
                     uiManager.D_FOVSTYLE = d;
@@ -467,7 +467,7 @@ namespace Aimmy2.Controls
                         MainWindow.FOVWindow.Circle.Visibility = Visibility.Collapsed;
                         MainWindow.FOVWindow.RectangleShape.Visibility = Visibility.Visible;
                     };
-                }, tooltip: "Shape of the FOV overlay. Circle is most common.")
+                }, tooltip: "视野圈的形状。圆形最常见。")
                 .AddColorChanger("FOV Color", c =>
                 {
                     c.Reader.Click += (s, e) =>
@@ -481,7 +481,7 @@ namespace Aimmy2.Controls
                         Color initialColor = Colors.White;
                         if (c.ColorChangingBorder.Background is SolidColorBrush scb)
                             initialColor = scb.Color;
-                        fovColorPickerInstance = new UISections.ColorPicker(initialColor, "FOV Color");
+                        fovColorPickerInstance = new UISections.ColorPicker(initialColor, "视野颜色");
 
                         fovColorPickerInstance.ColorChanged += (color) =>
                         {
@@ -508,7 +508,7 @@ namespace Aimmy2.Controls
                         _mainWindow.ActualFOV = s.Slider.Value;
                         PropertyChanger.PostNewFOVSize(_mainWindow.ActualFOV);
                     };
-                }, tooltip: "Size of the detection area. Smaller = more precise, larger = wider coverage.")
+                }, tooltip: "检测区域的大小。越小越精确，越大覆盖范围越广。")
                 .AddSlider("Dynamic FOV Size", "Size", 1, 1, 10, 640, s =>
                 {
                     uiManager.S_DynamicFOVSize = s;
@@ -517,7 +517,7 @@ namespace Aimmy2.Controls
                         if (Dictionary.toggleState["Dynamic FOV"])
                             PropertyChanger.PostNewFOVSize(s.Slider.Value);
                     };
-                }, tooltip: "FOV size when holding the Dynamic FOV key. Usually smaller for scoped aim.")
+                }, tooltip: "按住动态视野键时的视野大小。开镜瞄准一般设得更小。")
                 .AddSeparator();
         }
 
@@ -533,11 +533,11 @@ namespace Aimmy2.Controls
                     t.Minimize.Click += (s, e) => TogglePanel("ESP Config", ESPConfigPanel);
                 })
                 .AddToggle("Show Detected Player", t => uiManager.T_ShowDetectedPlayer = t,
-                    tooltip: "Draw a box around detected targets on screen.")
+                    tooltip: "在屏幕上给检测到的目标画方框。")
                 .AddToggle("Show AI Confidence", t => uiManager.T_ShowAIConfidence = t,
-                    tooltip: "Display how confident the AI is about each detection (0-100%).")
+                    tooltip: "显示 AI 对每个检测结果的置信度（0-100%）。")
                 .AddToggle("Show Tracers", t => uiManager.T_ShowTracers = t,
-                    tooltip: "Draw lines from screen edge to detected targets.");
+                    tooltip: "从屏幕边缘向检测到的目标画线。");
 
             builder.AddDropdown("Tracer Position", d =>
             {
@@ -564,7 +564,7 @@ namespace Aimmy2.Controls
                         }
                     }
                 };
-            }, tooltip: "Where tracer lines start from on the screen.");
+            }, tooltip: "追踪线在屏幕上从哪个位置出发。");
 
             builder
                 .AddColorChanger("Detected Player Color", c =>
@@ -580,7 +580,7 @@ namespace Aimmy2.Controls
                         Color initialColor = Colors.White;
                         if (c.ColorChangingBorder.Background is SolidColorBrush scb)
                             initialColor = scb.Color;
-                        colorPickerInstance = new UISections.ColorPicker(initialColor, "ESP Color");
+                        colorPickerInstance = new UISections.ColorPicker(initialColor, "透视显示颜色");
 
                         colorPickerInstance.ColorChanged += (color) =>
                         {
@@ -603,22 +603,22 @@ namespace Aimmy2.Controls
                 {
                     uiManager.S_DPFontSize = s;
                     s.Slider.ValueChanged += (sender, e) => PropertyChanger.PostDPFontSize((int)s.Slider.Value);
-                }, tooltip: "Text size for the confidence percentage display.")
+                }, tooltip: "置信度百分比文字的字号。")
                 .AddSlider("Corner Radius", "Radius", 1, 1, 0, 100, s =>
                 {
                     uiManager.S_DPCornerRadius = s;
                     s.Slider.ValueChanged += (sender, e) => PropertyChanger.PostDPWCornerRadius((int)s.Slider.Value);
-                }, tooltip: "How rounded the detection box corners are. 0 = sharp corners.")
+                }, tooltip: "检测框圆角的弧度。0 表示直角。")
                 .AddSlider("Border Thickness", "Thickness", 0.1, 1, 0.1, 10, s =>
                 {
                     uiManager.S_DPBorderThickness = s;
                     s.Slider.ValueChanged += (sender, e) => PropertyChanger.PostDPWBorderThickness(s.Slider.Value);
-                }, tooltip: "How thick the detection box outline is.")
+                }, tooltip: "检测框边框的粗细。")
                 .AddSlider("Opacity", "Opacity", 0.1, 0.1, 0, 1, s =>
                 {
                     uiManager.S_DPOpacity = s;
                     s.Slider.ValueChanged += (sender, e) => PropertyChanger.PostDPWOpacity(s.Slider.Value);
-                }, tooltip: "How see-through the detection box is. 0 = invisible, 1 = solid.")
+                }, tooltip: "检测框的透明度。0 表示完全透明，1 表示不透明。")
                 .AddSeparator();
         }
 

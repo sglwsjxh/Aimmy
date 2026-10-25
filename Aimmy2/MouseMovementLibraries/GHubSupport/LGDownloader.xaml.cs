@@ -103,7 +103,7 @@ namespace Visuality
         {
             if (sender is Button clickedButton)
             {
-                LogManager.Log(LogManager.LogLevel.Info, "Attempting to download LG Hub.", true);
+                LogManager.Log(LogManager.LogLevel.Info, "正在下载 LG Hub。", true);
 
                 using HttpClient httpClient = new();
 
@@ -113,12 +113,12 @@ namespace Visuality
                     var content = await response.Content.ReadAsByteArrayAsync();
                     await File.WriteAllBytesAsync(FilePath, content);
                 }
-                LogManager.Log(LogManager.LogLevel.Info, "LG Hub has downloaded, attempting to verify legitimacy of the file.", true);
+                LogManager.Log(LogManager.LogLevel.Info, "LG Hub 下载完成，正在校验文件。", true);
 
                 if (CheckFileValidity())
                 {
-                    LogManager.Log(LogManager.LogLevel.Info, "File is verified, attempting to launch LG Hub installer.", true);
-                    LogManager.Log(LogManager.LogLevel.Warning, "When LG Hub is installed, please make sure \"Automatic Updates\" is disabled for long term usage.", true, 20000);
+                    LogManager.Log(LogManager.LogLevel.Info, "文件校验通过，正在启动 LG Hub 安装程序。", true);
+                    LogManager.Log(LogManager.LogLevel.Warning, "安装完成后请关闭 LG Hub 的“自动更新”以便长期使用。", true, 20000);
                     Process.Start(new ProcessStartInfo
                     {
                         WindowStyle = ProcessWindowStyle.Hidden,
@@ -130,7 +130,7 @@ namespace Visuality
                 }
                 else
                 {
-                    LogManager.Log(LogManager.LogLevel.Error, "File is improper, please try a different host.", true);
+                    LogManager.Log(LogManager.LogLevel.Error, "文件校验失败，请尝试其他下载源。", true);
                 }
             }
         }

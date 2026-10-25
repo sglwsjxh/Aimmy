@@ -21,12 +21,12 @@ namespace Aimmy2.Class
                 {
                     return Convert.ToString(MJ[Syntax])?.Trim();
                 }
-                return "Not Found";
+                return "未找到";
             }
             catch (Exception e)
             {
                 new NoticeBar(e.Message, 10000).Show();
-                return "Not Found";
+                return "未找到";
             }
         }
         private static string GetActiveGpuName()
@@ -44,12 +44,12 @@ namespace Aimmy2.Class
                     }
                 }
 
-                return "GPU Not Found";
+                return "未找到 GPU";
             }
             catch (Exception e)
             {
-                new NoticeBar($"DXGI Error: {e.Message}", 10000).Show();
-                return "GPU Error";
+                new NoticeBar($"DXGI 错误：{e.Message}", 10000).Show();
+                return "GPU 错误";
             }
         }
     }

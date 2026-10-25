@@ -31,7 +31,7 @@ namespace Aimmy2.UILibrary
 
                 if (downloadResult)
                 {
-                    LogManager.Log(LogManager.LogLevel.Info, $"Downloaded {Name} to bin/{Path}/{Name}", true);
+                    LogManager.Log(LogManager.LogLevel.Info, $"已将 {Name} 下载到 bin/{Path}/{Name}", true);
                     RemoveFromParent();
                 }
                 else
@@ -59,7 +59,7 @@ namespace Aimmy2.UILibrary
 
             if (!response.IsSuccessStatusCode)
             {
-                LogManager.Log(LogManager.LogLevel.Error, $"Failed to download {name} from {uri}. Status: {response.StatusCode} - {response.ReasonPhrase}", true);
+                LogManager.Log(LogManager.LogLevel.Error, $"从 {uri} 下载 {name} 失败，状态：{response.StatusCode} - {response.ReasonPhrase}", true);
                 return false;
             }
 

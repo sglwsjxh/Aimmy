@@ -174,7 +174,7 @@ namespace AILogic
 
                 if (targetAdapter == null || targetOutput1 == null)
                 {
-                    LogManager.Log(LogLevel.Error, "No suitable display output found for DirectX capture.", true, 6000);
+                    LogManager.Log(LogLevel.Error, "未找到可用于 DirectX 捕获的显示器输出。", true, 6000);
                     throw new Exception("No suitable display output found");
                 }
 
@@ -210,7 +210,7 @@ namespace AILogic
 
                     if (result.Failure || _dxDevice == null)
                     {
-                        LogManager.Log(LogLevel.Error, $"Failed to create D3D11 device: {result}", true, 6000);
+                        LogManager.Log(LogLevel.Error, $"创建 D3D11 设备失败：{result}", true, 6000);
                         throw new Exception($"Failed to create D3D11 device: {result}");
                     }
                 }
@@ -223,18 +223,18 @@ namespace AILogic
             }
             catch (SharpGenException ex) when (ex.ResultCode == Vortice.DXGI.ResultCode.Unsupported || ex.HResult == unchecked((int)0x887A0004))
             {
-                LogManager.Log(LogLevel.Error, $"DirectX Desktop Duplication not supported on this system: {ex.Message}", true, 6000);
+                LogManager.Log(LogLevel.Error, $"当前系统不支持 DirectX 桌面复制：{ex.Message}", true, 6000);
                 _directXFailedPermanently = true;
                 DisposeDxgiResources();
 
                 AimSettings.ScreenCaptureMethod = "GDI+";
                 _currentCaptureMethod = "GDI+";
 
-                LogManager.Log(LogLevel.Error, "DirectX Desktop Duplication not supported on this system. Switched to GDI+ capture.", true, 6000);
+                LogManager.Log(LogLevel.Error, "当前系统不支持 DirectX 桌面复制，已切换到 GDI+ 捕获。", true, 6000);
             }
             catch (Exception ex)
             {
-                LogManager.Log(LogLevel.Error, $"Failed to initialize DirectX Desktop Duplication: {ex.Message}", true, 6000);
+                LogManager.Log(LogLevel.Error, $"初始化 DirectX 桌面复制失败：{ex.Message}", true, 6000);
                 DisposeDxgiResources();
                 throw;
             }
@@ -361,7 +361,7 @@ namespace AILogic
                     }
                     else
                     {
-                        LogManager.Log(LogLevel.Warning, "No visible region to copy from DirectX capture.", true, 3000);
+                        LogManager.Log(LogLevel.Warning, "DirectX 捕获中没有可复制的可见区域。", true, 3000);
                         return GetCachedFrame(detectionBox, allowStaleCache);
                     }
 

@@ -164,7 +164,7 @@ namespace Aimmy2.Controls
                     var currentSize = Dictionary.dropdownState["Image Size"];
                     for (int i = 0; i < d.DropdownBox.Items.Count; i++)
                     {
-                        if ((d.DropdownBox.Items[i] as ComboBoxItem)?.Content?.ToString() == currentSize)
+                        if (UiValue.Of(d.DropdownBox.Items[i] as ComboBoxItem) == currentSize)
                         {
                             d.DropdownBox.SelectedIndex = i;
                             break;
@@ -180,29 +180,29 @@ namespace Aimmy2.Controls
                         if (d.DropdownBox.SelectedItem == null || e.AddedItems.Count == 0)
                             return;
 
-                        var newSize = (d.DropdownBox.SelectedItem as ComboBoxItem)?.Content?.ToString();
+                        var newSize = UiValue.Of(d.DropdownBox.SelectedItem as ComboBoxItem);
                         if (string.IsNullOrEmpty(newSize))
                             return;
 
                         await _mainWindow!.ChangeImageSizeAsync(newSize);
                     };
-                }, tooltip: "Resolution the AI uses for detection. Smaller = faster but less accurate.")
+                }, tooltip: "AI 检测使用的分辨率，越小越快但精度越低。")
                 .AddSlider("AI FPS Limit", "FPS", 5, 5, 0, 240, s =>
                 {
                     uiManager.S_AIFpsLimit = s;
-                    s.SetValueFormatter(value => value <= 0 ? "Unlimited" : $"{value:F0} FPS");
-                }, tooltip: "Caps the AI loop to reduce CPU/GPU load. 0 keeps Aimmy running at full speed.")
+                    s.SetValueFormatter(value => value <= 0 ? "无限制" : $"{value:F0} FPS");
+                }, tooltip: "限制 AI 循环以降低 CPU/GPU 负载，0 表示全速运行。")
                 .AddButton("Run Performance Helper", b =>
                 {
                     b.Reader.Click += (s, e) => _mainWindow!.ShowPerformanceHelper();
-                }, tooltip: "Open the performance helper again for the currently loaded model.")
+                }, tooltip: "为当前加载的模型重新打开性能助手。")
                 .AddDropdown("Target Class", d =>
                 {
                     d.DropdownBox.SelectedIndex = 0;
                     uiManager.D_TargetClass = d;
                     _mainWindow.AddDropdownItem(d, "Best Confidence");
                     UpdateTargetClassDropdown(d);
-                }, tooltip: "Which type of target to aim at. Best Confidence picks the most certain detection.")
+                }, tooltip: "瞄准哪一类目标，最佳置信度取最确定的一个检测。")
                 .AddSlider("AI Minimum Confidence", "% Confidence", 1, 1, 1, 100, s =>
                 {
                     uiManager.S_AIMinimumConfidence = s;
@@ -210,17 +210,17 @@ namespace Aimmy2.Controls
                     {
                         var value = s.Slider.Value;
                         if (value >= 95)
-                            LogManager.Log(LogLevel.Warning, "The minimum confidence you have set for Aimmy to be too high and may be unable to detect players.", true);
+                            LogManager.Log(LogLevel.Warning, "设置的 AI 最低置信度过高，可能无法检测到玩家。", true);
                         else if (value <= 35)
-                            LogManager.Log(LogLevel.Warning, "The minimum confidence you have set for Aimmy may be too low can cause false positives.", true);
+                            LogManager.Log(LogLevel.Warning, "设置的 AI 最低置信度过低，容易出现误检。", true);
                     };
-                }, tooltip: "How sure the AI must be before targeting. Higher = fewer false detections but may miss targets.")
+                }, tooltip: "AI 判定目标的把握程度，越高误检越少但可能漏掉目标。")
                 .AddToggle("Enable Model Switch Keybind", t => uiManager.T_EnableModelSwitchKeybind = t,
-                    tooltip: "Allow switching between AI models using a hotkey.")
+                    tooltip: "允许用快捷键在 AI 模型之间切换。")
                 .AddKeyChanger("Model Switch Keybind", k => uiManager.C_ModelSwitchKeybind = k,
-                    tooltip: "Press this key to cycle through available AI models.")
+                    tooltip: "按下此键循环切换可用的 AI 模型。")
                 .AddKeyChanger("Emergency Stop Keybind", k => uiManager.C_EmergencyKeybind = k,
-                    tooltip: "Press this key to immediately stop all aim assist functions.")
+                    tooltip: "按下此键立即停止所有辅助瞄准功能。")
                 .AddSeparator();
         }
 
@@ -236,20 +236,20 @@ namespace Aimmy2.Controls
                     t.Minimize.Click += (s, e) => TogglePanel("Settings Menu", SettingsConfigPanel);
                 })
                 .AddToggle("Collect Data While Playing", t => uiManager.T_CollectDataWhilePlaying = t,
-                    tooltip: "Save screenshots of detections for training new AI models.")
+                    tooltip: "保存检测截图，用于训练新的 AI 模型。")
                 .AddToggle("Auto Label Data", t => uiManager.T_AutoLabelData = t,
-                    tooltip: "Automatically label collected screenshots with detection data.")
+                    tooltip: "自动为采集的截图标注检测数据。")
                 .AddToggle("Mouse Background Effect", t => uiManager.T_MouseBackgroundEffect = t,
-                    tooltip: "Show a visual effect on the UI when moving your mouse.")
+                    tooltip: "移动鼠标时界面显示特效。")
                 .AddToggle("UI TopMost", t => uiManager.T_UITopMost = t,
-                    tooltip: "Keep this window above all other windows.")
+                    tooltip: "让本窗口始终显示在其他窗口之上。")
                 .AddToggle("Debug Mode", t => uiManager.T_DebugMode = t,
-                    tooltip: "Show extra information useful for troubleshooting problems.")
+                    tooltip: "显示排查问题用的额外信息。")
                 .AddButton("Save Config", b =>
                 {
                     uiManager.B_SaveConfig = b;
                     b.Reader.Click += (s, e) => new ConfigSaver().ShowDialog();
-                }, tooltip: "Save your current settings to a file you can load later.")
+                }, tooltip: "把当前设置保存成文件，之后可再加载。")
                 .AddSeparator();
         }
 
@@ -271,9 +271,9 @@ namespace Aimmy2.Controls
                     uiManager.D_ScreenCaptureMethod = d;
                     _mainWindow.AddDropdownItem(d, "DirectX");
                     _mainWindow.AddDropdownItem(d, "GDI+");
-                }, tooltip: "How the screen is captured. DirectX is faster, GDI+ works on more systems.")
+                }, tooltip: "屏幕捕获方式，DirectX 更快，GDI+ 兼容性更好。")
                 .AddToggle("StreamGuard", t => uiManager.T_StreamGuard = t,
-                    tooltip: "Hide the overlay from screen recordings and streams. - Appears in system tray.")
+                    tooltip: "在录屏和直播中隐藏覆盖层，会显示在系统托盘。")
                 .AddSeparator();
 
             // Handle DisplaySelector separately as it's a custom control
@@ -285,18 +285,18 @@ namespace Aimmy2.Controls
             DisplaySelectMenu.Children.Insert(insertIndex, uiManager.DisplaySelector);
 
             // Add refresh button after DisplaySelector
-            var refreshButton = new APButton("Refresh Displays", "Update the list of available monitors.");
+            var refreshButton = new APButton("Refresh Displays", "更新可用的显示器列表。");
             refreshButton.Reader.Click += (s, e) =>
             {
                 try
                 {
                     DisplayManager.RefreshDisplays();
                     uiManager.DisplaySelector.RefreshDisplays();
-                    LogManager.Log(LogLevel.Info, "Display list refreshed successfully.", true);
+                    LogManager.Log(LogLevel.Info, "显示器列表已刷新。", true);
                 }
                 catch (Exception ex)
                 {
-                    LogManager.Log(LogLevel.Error, $"Error refreshing displays: {ex.Message}", true);
+                    LogManager.Log(LogLevel.Error, $"刷新显示器失败：{ex.Message}", true);
                 }
             };
             DisplaySelectMenu.Children.Insert(insertIndex + 1, refreshButton);
@@ -339,7 +339,7 @@ namespace Aimmy2.Controls
             {
                 try
                 {
-                    LogManager.Log(LogLevel.Info, $"AI focus switched to Display {e.DisplayIndex + 1} ({e.Bounds.Width}x{e.Bounds.Height})", true);
+                    LogManager.Log(LogLevel.Info, $"AI 焦点已切换到显示器 {e.DisplayIndex + 1}（{e.Bounds.Width}x{e.Bounds.Height}）", true);
                     UpdateDisplayRelatedSettings(e);
                 }
                 catch (Exception ex)
@@ -369,7 +369,7 @@ namespace Aimmy2.Controls
                 {
                     for (int i = 0; i < dropdown.DropdownBox.Items.Count; i++)
                     {
-                        if ((dropdown.DropdownBox.Items[i] as ComboBoxItem)?.Content?.ToString() == newSize)
+                        if (UiValue.Of(dropdown.DropdownBox.Items[i] as ComboBoxItem) == newSize)
                         {
                             dropdown.DropdownBox.SelectedIndex = i;
                             break;
@@ -423,10 +423,10 @@ namespace Aimmy2.Controls
             dropdown.Visibility = visibility;
             _mainWindow!.uiManager.D_TargetClass!.Visibility = visibility;
 
-            string? selection = (dropdown.DropdownBox.SelectedItem as ComboBoxItem)?.Content?.ToString();
+            string? selection = UiValue.Of(dropdown.DropdownBox.SelectedItem as ComboBoxItem);
 
             var removedItems = dropdown.DropdownBox.Items.Cast<ComboBoxItem>()
-                .Where(item => item.Content?.ToString() != "Best Confidence")
+                .Where(item => UiValue.Of(item) != "Best Confidence")
                 .ToList();
 
             foreach (var item in removedItems)
@@ -445,7 +445,7 @@ namespace Aimmy2.Controls
             {
                 for (int i = 0; i < dropdown.DropdownBox.Items.Count; i++)
                 {
-                    if ((dropdown.DropdownBox.Items[i] as ComboBoxItem)?.Content?.ToString() == selection)
+                    if (UiValue.Of(dropdown.DropdownBox.Items[i] as ComboBoxItem) == selection)
                     {
                         dropdown.DropdownBox.SelectedIndex = i;
                         return;

@@ -29,7 +29,7 @@
                                FontSize="12"
                                VerticalAlignment="Center"
                                Padding="0,0,4,0"/>
-                        <Label Content="Aimmy is free and open source"
+                        <Label Content="Aimmy 免费且开源"
                                FontFamily="{StaticResource Atkinson Hyperlegible}"
                                Foreground="#80FFFFFF"
                                FontSize="11"
@@ -58,7 +58,7 @@
                                FontWeight="Bold"
                                Foreground="White"
                                HorizontalAlignment="Center"/>
-                    <TextBlock Text="Universal Second Eye"
+                    <TextBlock Text="你的第二双眼睛"
                                FontFamily="{StaticResource Atkinson Hyperlegible}"
                                FontSize="12"
                                Foreground="#99FFFFFF"
@@ -94,7 +94,7 @@
                                 Background="#20FFFFFF"
                                 BorderBrush="Transparent"
                                 BorderThickness="0"
-                                Content="Check for Updates"
+                                Content="检查更新"
                                 FontWeight="Normal"
                                 FontSize="11"
                                 Height="32"
@@ -116,7 +116,7 @@
                     Padding="20"
                     Margin="0,0,0,12">
                 <StackPanel>
-                    <TextBlock Text="CORE TEAM"
+                    <TextBlock Text="核心团队"
                                FontFamily="{StaticResource Atkinson Hyperlegible}"
                                FontSize="10"
                                FontWeight="Bold"
@@ -139,7 +139,7 @@
                     Padding="20"
                     Margin="0,0,0,12">
                 <StackPanel>
-                    <TextBlock Text="KEY CONTRIBUTORS"
+                    <TextBlock Text="主要贡献者"
                                FontFamily="{StaticResource Atkinson Hyperlegible}"
                                FontSize="10"
                                FontWeight="Bold"
@@ -166,13 +166,13 @@
                     Padding="16"
                     Margin="0,0,0,12">
                 <StackPanel HorizontalAlignment="Center">
-                    <TextBlock Text="And the entire Aimmy community"
+                    <TextBlock Text="以及整个 Aimmy 社区"
                                FontFamily="{StaticResource Atkinson Hyperlegible}"
                                FontSize="11"
                                Foreground="#70FFFFFF"
                                HorizontalAlignment="Center"
                                Margin="0,0,0,4"/>
-                    <TextBlock Text="Thank you for your support!"
+                    <TextBlock Text="感谢你的支持！"
                                FontFamily="{StaticResource Atkinson Hyperlegible}"
                                FontSize="10"
                                Foreground="#50FFFFFF"
@@ -201,7 +201,7 @@
                                FontSize="14"
                                VerticalAlignment="Center"
                                Margin="0,0,8,0"/>
-                    <TextBlock Text="View on GitHub"
+                    <TextBlock Text="在 GitHub 上查看"
                                VerticalAlignment="Center"/>
                 </StackPanel>
             </Ant:Button>
@@ -226,7 +226,7 @@
                                FontSize="14"
                                VerticalAlignment="Center"
                                Margin="0,0,8,0"/>
-                    <TextBlock Text="Join our Discord"
+                    <TextBlock Text="加入我们的 Discord"
                                VerticalAlignment="Center"/>
                 </StackPanel>
             </Ant:Button>

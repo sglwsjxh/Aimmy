@@ -11,10 +11,14 @@ namespace UILibrary
     {
         private string main_dictionary_path { get; set; }
 
+        /// <summary>控件的英文标识，作为配置字典的键，不随显示文案变化。</summary>
+        public string TitleKey { get; }
+
         public ADropdown(string title, string dictionary_path, string? tooltip = null)
         {
             InitializeComponent();
-            DropdownTitle.Content = title;
+            TitleKey = title;
+            DropdownTitle.Content = UiText.T(title);
             main_dictionary_path = dictionary_path;
 
             if (!string.IsNullOrEmpty(tooltip))
@@ -28,7 +32,7 @@ namespace UILibrary
 
         private void DropdownBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var selectedItemContent = ((ComboBoxItem)DropdownBox.SelectedItem)?.Content?.ToString();
+            var selectedItemContent = UiValue.Of(DropdownBox.SelectedItem as ComboBoxItem);
             if (selectedItemContent != null)
             {
                 Dictionary.dropdownState[main_dictionary_path] = selectedItemContent;

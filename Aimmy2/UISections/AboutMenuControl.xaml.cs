@@ -24,9 +24,9 @@ namespace Aimmy2.Controls
         // Credits data - easy to add/remove people
         private static readonly (string name, string role, string? github)[] CoreTeam =
         {
-            ("Babyhamsta", "AI Logic", "Babyhamsta"),
-            ("MarsQQ", "Design", "MarsInsanity"),
-            ("Taylor", "Optimization", "TaylorIsBlue")
+            ("Babyhamsta", "AI 逻辑", "Babyhamsta"),
+            ("MarsQQ", "设计", "MarsInsanity"),
+            ("Taylor", "优化", "TaylorIsBlue")
         };
 
         private static readonly (string name, string? github, bool highlighted)[] Contributors =

@@ -11,7 +11,7 @@ namespace Aimmy2.UILibrary
         {
             InitializeComponent();
 
-            LabelTitle.Content = Text;
+            LabelTitle.Content = UiText.T(Text);
 
             if (MinimizableMenu)
             {

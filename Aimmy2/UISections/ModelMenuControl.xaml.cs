@@ -78,7 +78,7 @@ namespace Aimmy2.Controls
 
                     var loadingText = new TextBlock
                     {
-                        Text = "Loading store...",
+                        Text = "正在加载在线模型…",
                         Foreground = System.Windows.Media.Brushes.White,
                         HorizontalAlignment = HorizontalAlignment.Center,
                         Margin = new Thickness(0, 20, 0, 0)
@@ -87,7 +87,7 @@ namespace Aimmy2.Controls
                     ModelStoreScroller.Children.Add(loadingText);
                     ConfigStoreScroller.Children.Add(new TextBlock
                     {
-                        Text = "Loading store...",
+                        Text = "正在加载在线配置…",
                         Foreground = System.Windows.Media.Brushes.White,
                         HorizontalAlignment = HorizontalAlignment.Center,
                         Margin = new Thickness(0, 20, 0, 0)
@@ -121,7 +121,7 @@ namespace Aimmy2.Controls
             {
                 await Dispatcher.InvokeAsync(() =>
                 {
-                    new NoticeBar($"Failed to load store: {e.Message}", 10000).Show();
+                    new NoticeBar($"加载在线资源失败：{e.Message}", 10000).Show();
 
                     // Show error in UI
                     ModelStoreScroller.Children.Clear();
@@ -129,7 +129,7 @@ namespace Aimmy2.Controls
 
                     ModelStoreScroller.Children.Add(new TextBlock
                     {
-                        Text = "Failed to load store",
+                        Text = "加载失败",
                         Foreground = System.Windows.Media.Brushes.Red,
                         HorizontalAlignment = HorizontalAlignment.Center,
                         Margin = new Thickness(0, 20, 0, 0)
@@ -177,12 +177,12 @@ namespace Aimmy2.Controls
                     }
                     else
                     {
-                        new NoticeBar($"Directory not found: {path}", 5000).Show();
+                        new NoticeBar($"找不到目录：{path}", 5000).Show();
                     }
                 }
                 catch (Exception ex)
                 {
-                    new NoticeBar($"Failed to open folder: {ex.Message}", 5000).Show();
+                    new NoticeBar($"打开文件夹失败：{ex.Message}", 5000).Show();
                 }
             }
         }
@@ -275,7 +275,7 @@ namespace Aimmy2.Controls
                     {
                         string duplicatePath = Path.Combine(destDir, Path.GetFileNameWithoutExtension(fileName) + "-DUPLICATED" + Path.GetExtension(fileName));
                         File.Move(file, duplicatePath);
-                        new NoticeBar($"Duplicate model renamed: {Path.GetFileName(duplicatePath)}", 3000).Show();
+                        new NoticeBar($"模型重名，已重命名为：{Path.GetFileName(duplicatePath)}", 3000).Show();
                         continue;
                     }
                     try
@@ -289,11 +289,11 @@ namespace Aimmy2.Controls
                         };
 
                         ModelListBox.Items.Add(item);
-                        new NoticeBar($"Model moved: {Path.GetFileName(destPath)}", 3000).Show();
+                        new NoticeBar($"模型已移入：{Path.GetFileName(destPath)}", 3000).Show();
                     }
                     catch (Exception ex)
                     {
-                        new NoticeBar($"Error moving model: {ex.Message}", 5000).Show();
+                        new NoticeBar($"移动模型失败：{ex.Message}", 5000).Show();
                     }
                 }
             }
@@ -335,7 +335,7 @@ namespace Aimmy2.Controls
                     {
                         string duplicatePath = Path.Combine(destDir, Path.GetFileNameWithoutExtension(fileName) + "-DUPLICATED" + Path.GetExtension(fileName));
                         File.Move(file, duplicatePath);
-                        new NoticeBar($"Duplicate config renamed: {Path.GetFileName(duplicatePath)}", 3000).Show();
+                        new NoticeBar($"配置重名，已重命名为：{Path.GetFileName(duplicatePath)}", 3000).Show();
                         continue;
                     }
 
@@ -350,11 +350,11 @@ namespace Aimmy2.Controls
                         };
 
                         ConfigsListBox.Items.Add(item);
-                        new NoticeBar($"Config moved: {Path.GetFileName(destPath)}", 3000).Show();
+                        new NoticeBar($"配置已移入：{Path.GetFileName(destPath)}", 3000).Show();
                     }
                     catch (Exception ex)
                     {
-                        new NoticeBar($"Error moving config: {ex.Message}", 5000).Show();
+                        new NoticeBar($"移动配置失败：{ex.Message}", 5000).Show();
                     }
                 }
             }

@@ -20,7 +20,7 @@
                 <Label x:Name="DisplaySelectorTitle"
                        Padding="10,10,10,10"
                        FontFamily="{StaticResource Atkinson Hyperlegible}"
-                       Content="Focus Display"
+                       Content="焦点显示器"
                        Foreground="#DDFFFFFF"
                        VerticalContentAlignment="Center"
                        FontSize="13"
@@ -46,7 +46,7 @@
 
                     <Label x:Name="CurrentDisplayInfo"
                            FontFamily="{StaticResource Atkinson Hyperlegible}"
-                           Content="Primary Display Selected"
+                           Content="已选中主显示器"
                            Foreground="#BBFFFFFF"
                            FontSize="14"
                            HorizontalContentAlignment="Center"

@@ -20,7 +20,7 @@
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
                FontFamily="Consolas"
-               Content="Confidence = 20%"
+               Content="置信度 = 20%"
                Padding="0,0,0,0"
                Opacity="0"
                HorizontalContentAlignment="Center"

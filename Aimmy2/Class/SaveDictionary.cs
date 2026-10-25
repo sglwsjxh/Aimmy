@@ -28,7 +28,7 @@ namespace Class
                     }
                     catch (Exception ex)
                     {
-                        LogManager.Log(LogManager.LogLevel.Error, $"Failed to create directory {dir}: {ex.Message}", true);
+                        LogManager.Log(LogManager.LogLevel.Error, $"创建目录失败 {dir}：{ex.Message}", true);
                     }
                 }
             }
@@ -56,7 +56,7 @@ namespace Class
             catch (Exception ex)
             {
                 // Only show error if it's not a directory creation issue
-                MessageBox.Show($"Error writing JSON, please note:\n{ex}");
+                MessageBox.Show($"写入 JSON 失败，请留意：\n{ex}");
             }
         }
 
@@ -102,7 +102,7 @@ namespace Class
                 catch
                 {
                     // Only show error if we can't even create a default file
-                    MessageBox.Show("Error loading JSON, please note:\n" + ex.ToString());
+                    MessageBox.Show("读取 JSON 失败，请留意：\n" + ex.ToString());
                 }
             }
         }

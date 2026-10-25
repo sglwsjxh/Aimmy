@@ -252,10 +252,10 @@ namespace Visuality
 
             TypeLabel = type switch
             {
-                NoticeType.Success => "SUCCESS",
-                NoticeType.Warning => "WARNING",
-                NoticeType.Error => "ERROR",
-                _ => "INFO"
+                NoticeType.Success => "成功",
+                NoticeType.Warning => "警告",
+                NoticeType.Error => "错误",
+                _ => "提示"
             };
 
             IconData = type switch

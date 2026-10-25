@@ -121,7 +121,7 @@
                             CornerRadius="3"
                             Margin="10,5,10,5">
                             <Grid>
-                                <Label Content="Brightness"
+                                <Label Content="亮度"
                                    Foreground="#BBFFFFFF"
                                    FontFamily="{StaticResource Atkinson Hyperlegible}"
                                    FontSize="11"
@@ -247,7 +247,7 @@
                                 VerticalAlignment="Center">
                                 <StackPanel Orientation="Vertical"
                                         VerticalAlignment="Center">
-                                    <Label Content="Current Theme Color"
+                                    <Label Content="当前主题色"
                                        Foreground="#BBFFFFFF"
                                        FontFamily="{StaticResource Atkinson Hyperlegible}"
                                        FontSize="11"
@@ -292,7 +292,7 @@
                             DragLeave="DragDropView_DragLeave">
                 <Grid>
                     <!-- Title -->
-                    <Label Content="Media Control"
+                    <Label Content="媒体控制"
                            Padding="10,10,10,10"
                            FontFamily="{StaticResource Atkinson Hyperlegible}"
                            Foreground="#DDFFFFFF"
@@ -334,7 +334,7 @@
                                 </VisualBrush>
                             </Border.BorderBrush>
                             <TextBlock x:Name="DropHintText"
-                                       Text="Drag &amp; Drop Media Here"
+                                       Text="拖放媒体文件到此处"
                                        Foreground="#BBFFFFFF"
                                        FontFamily="{StaticResource Atkinson Hyperlegible}"
                                        FontSize="12"
@@ -348,7 +348,7 @@
                                 CornerRadius="3"
                                 Margin="28,5,26,5">
                             <Grid>
-                                <Label Content="Brightness"
+                                <Label Content="亮度"
                                        Foreground="#BBFFFFFF"
                                        FontFamily="{StaticResource Atkinson Hyperlegible}"
                                        FontSize="11"

@@ -19,23 +19,23 @@ namespace Other
 
             { "OemMinus", "-"},
             { "OemPlus", "+"},
-            { "Back", "Backspace"},
-            { "Oem5", "Backslash (\\)"},
-            { "LMenu", "Left Alt"},
-            { "RMenu", "Right Alt"},
-            { "RShiftKey", "Right Shift" },
-            { "LShiftKey", "Left Shift" },
+            { "Back", "退格"},
+            { "Oem5", "反斜杠 (\\)"},
+            { "LMenu", "左 Alt"},
+            { "RMenu", "右 Alt"},
+            { "RShiftKey", "右 Shift" },
+            { "LShiftKey", "左 Shift" },
 
-            { "Oem4", "Left Bracket"},
-            { "OemOpenBrackets", "Left Bracket"},
-            { "Oem6", "Right Bracket"},
+            { "Oem4", "左方括号"},
+            { "OemOpenBrackets", "左方括号"},
+            { "Oem6", "右方括号"},
             { "Oem1", ";"},
             { "Oem3", "`" },
             { "OemQuotes", "'"},
             { "OemQuestion", "/"},
             { "OemPeriod", "."},
             { "OemComma", ","},
-            { "Return", "Enter" },
+            { "Return", "回车" },
         };
 
         public static string ConvertToRegularKey(string keyName)

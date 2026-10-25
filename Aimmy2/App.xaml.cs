@@ -33,7 +33,7 @@ namespace Aimmy2
             catch (Exception ex)
             {
                 // If startup window fails, launch main window directly
-                MessageBox.Show($"Startup animation failed: {ex.Message}\nLaunching main application...",
+                MessageBox.Show($"启动动画加载失败：{ex.Message}\n即将直接启动主程序……",
                               "Aimmy AI", MessageBoxButton.OK, MessageBoxImage.Information);
 
                 var mainWindow = new MainWindow();

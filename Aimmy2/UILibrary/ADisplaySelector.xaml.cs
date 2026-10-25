@@ -141,7 +141,7 @@ namespace Aimmy2.UILibrary
 
                 var primaryText = new TextBlock
                 {
-                    Text = "Primary",
+                    Text = "主屏",
                     FontFamily = (FontFamily)FindResource("Atkinson Hyperlegible"),
                     FontSize = 9,
                     Foreground = Brushes.White
@@ -236,7 +236,7 @@ namespace Aimmy2.UILibrary
         {
             if (_displays.Count == 0)
             {
-                CurrentDisplayInfo.Content = "No displays detected";
+                CurrentDisplayInfo.Content = "未检测到显示器";
                 return;
             }
 
@@ -279,8 +279,8 @@ namespace Aimmy2.UILibrary
             if (_selectedDisplayIndex < _displays.Count)
             {
                 var display = _displays[_selectedDisplayIndex];
-                string info = $"Display {display.Index + 1} Selected";
-                if (display.IsPrimary) info += " (Primary)";
+                string info = $"显示器 {display.Index + 1} 已选中";
+                if (display.IsPrimary) info += "（主屏）";
                 info += $" - {display.Bounds.Width}x{display.Bounds.Height}";
                 CurrentDisplayInfo.Content = info;
             }

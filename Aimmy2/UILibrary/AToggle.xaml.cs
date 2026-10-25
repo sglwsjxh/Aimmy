@@ -1,4 +1,5 @@
-﻿using Aimmy2.Theme;
+﻿using Aimmy2.Class;
+using Aimmy2.Theme;
 using AimmyWPF.Class;
 using System.Windows;
 using System.Windows.Media;
@@ -18,7 +19,7 @@ namespace Aimmy2.UILibrary
         public AToggle(string Text, string? tooltip = null)
         {
             InitializeComponent();
-            ToggleTitle.Content = Text;
+            ToggleTitle.Content = UiText.T(Text);
 
             if (!string.IsNullOrEmpty(tooltip))
             {

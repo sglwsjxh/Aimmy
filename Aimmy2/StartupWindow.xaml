@@ -320,7 +320,7 @@
 
                     <!-- Subtitle -->
                     <TextBlock x:Name="SubtitleText"
-               Text="AI PRECISION TARGETING"
+               Text="AI 精准瞄准"
                FontSize="10"
                FontWeight="Normal"
                Foreground="#FF888888"
@@ -371,7 +371,7 @@
                         </StackPanel>
 
                         <TextBlock x:Name="LoadingText"
-                   Text="INITIALIZING AIMMY AI"
+                   Text="正在初始化 AIMMY AI"
                    FontSize="9"
                    Foreground="#FF666666"
                    HorizontalAlignment="Center"

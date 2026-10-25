@@ -76,7 +76,7 @@ namespace Visuality
                                     .GroupBy(kvp => kvp.Key)
                                     .ToDictionary(g => g.Key, g => g
                                     .First().Value), $"bin\\configs\\{ConfigNameTextbox.Text}.cfg", RecommendedModelNameTextBox.Text, ExtraStrings);
-            LogManager.Log(LogManager.LogLevel.Info, $"Config has been saved to bin/configs.", true);
+            LogManager.Log(LogManager.LogLevel.Info, $"配置已保存到 bin/configs。", true);
             Close();
         }
 
@@ -99,8 +99,8 @@ namespace Visuality
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             if (!File.Exists($"bin/configs/{ConfigNameTextbox.Text}.cfg") ||
-                MessageBox.Show("A config already exists with the same name, would you like to overwrite it?",
-                    $"{Title} - Configuration Saver", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                MessageBox.Show("已存在同名配置，是否覆盖？",
+                    $"{Title} - 保存配置", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 WriteJSON();
             }

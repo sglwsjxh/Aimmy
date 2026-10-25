@@ -4,6 +4,7 @@ using Aimmy2.Class;
 using Aimmy2.Theme;
 using Other;
 using System.ComponentModel;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -134,17 +135,17 @@ namespace Visuality
 
             if (showPrompt)
             {
-                MiniPromptTitle.Text = "Run Performance Helper?";
-                MiniPromptSubtitle.Text = "Benchmark Aimmy once and get a size + FPS cap for this PC.";
-                MiniFooterText.Text = "Closing will remind you later.";
+                MiniPromptTitle.Text = "运行性能助手？";
+                MiniPromptSubtitle.Text = "为这台电脑做一次性能测试，给出尺寸和帧率上限。";
+                MiniFooterText.Text = "关闭后稍后会再次提醒。";
                 MiniFooter.Visibility = Visibility.Visible;
                 MiniOpenButton.Visibility = Visibility.Visible;
                 MiniSkipButton.Visibility = Visibility.Visible;
                 return;
             }
 
-            MiniPromptTitle.Text = "Performance Helper";
-            MiniPromptSubtitle.Text = "Opening benchmark panel.";
+            MiniPromptTitle.Text = "性能助手";
+            MiniPromptSubtitle.Text = "正在打开性能测试面板。";
             MiniFooterText.Text = string.Empty;
             MiniFooter.Visibility = Visibility.Visible;
             MiniOpenButton.Visibility = Visibility.Collapsed;
@@ -423,7 +424,7 @@ namespace Visuality
             RunTestButton.Visibility = Visibility.Visible;
             NoThanksButton.IsEnabled = false;
             RunTestButton.IsEnabled = false;
-            RunTestButton.Content = "Running";
+            RunTestButton.Content = "测试中";
             FooterText.Text = string.Empty;
 
             var progress = new Progress<PerformanceBenchmarkProgress>(UpdateProgress);
@@ -443,10 +444,10 @@ namespace Visuality
             catch (Exception ex)
             {
                 _closeAfterBenchmarkCancel = false;
-                ProgressTitle.Text = "Benchmark stopped";
+                ProgressTitle.Text = "性能测试已停止";
                 ProgressSubtitle.Text = ex.Message;
-                FooterText.Text = "Close this helper or try again after loading a model.";
-                RunTestButton.Content = "Try Again";
+                FooterText.Text = "可以关闭此窗口，或加载模型后重试。";
+                RunTestButton.Content = "重试";
                 RunTestButton.IsEnabled = true;
                 NoThanksButton.IsEnabled = true;
             }
@@ -477,16 +478,45 @@ namespace Visuality
                 percent = 100;
             }
 
-            ProgressTitle.Text = $"Step {progress.StepIndex} of {progress.TotalSteps}";
-            ProgressSubtitle.Text = $"{progress.Status}. {remaining} size checks left.";
+            ProgressTitle.Text = $"第 {progress.StepIndex} 步，共 {progress.TotalSteps} 步";
+            ProgressSubtitle.Text = $"{TranslateProgressStatus(progress.Status)}，剩余 {remaining} 个尺寸。";
             BenchmarkProgressBar.Value = percent;
+        }
+
+        // AIManager 上报的状态串是英文固定格式，只在显示层转换，不改上报方
+        private static readonly Regex ProgressStatusPattern = new(
+            @"^(?<phase>Preparing|Warming up|Testing) (?<size>\d+)px(?<model> model)?(?: \((?<seconds>\d+)s (?:minimum, (?<frames>\d+) frames|left)\))?$",
+            RegexOptions.Compiled);
+
+        private static string TranslateProgressStatus(string status)
+        {
+            Match match = ProgressStatusPattern.Match(status);
+            if (!match.Success)
+                return status.Equals("Complete", StringComparison.OrdinalIgnoreCase) ? "已完成" : status;
+
+            string phase = match.Groups["phase"].Value switch
+            {
+                "Preparing" => "正在准备",
+                "Warming up" => "正在预热",
+                _ => "正在测试"
+            };
+
+            string text = $"{phase} {match.Groups["size"].Value}px";
+            if (match.Groups["model"].Success)
+                text += " 模型";
+            if (!match.Groups["seconds"].Success)
+                return text;
+
+            return match.Groups["frames"].Success
+                ? $"{text}（最少 {match.Groups["seconds"].Value} 秒，{match.Groups["frames"].Value} 帧）"
+                : $"{text}（剩 {match.Groups["seconds"].Value} 秒）";
         }
 
         private void ShowResults(PerformanceBenchmarkReport report)
         {
             ProgressPanel.Visibility = Visibility.Collapsed;
             ResultsPanel.Visibility = Visibility.Visible;
-            NoThanksButton.Content = "Close";
+            NoThanksButton.Content = "关闭";
             NoThanksButton.IsEnabled = true;
             FooterText.Text = string.Empty;
 
@@ -509,7 +539,7 @@ namespace Visuality
             UpdateCompletedRunButtons(report);
 
             FixedModelNote.Text = report.IsFixedSizeModel
-                ? "Fixed-size model: image size cannot be changed without loading a different model."
+                ? "固定尺寸模型：不更换模型就无法修改图像尺寸。"
                 : string.Empty;
         }
 
@@ -518,7 +548,7 @@ namespace Visuality
             bool hasStableResult = report.Results.Any(result => result.FrameCount > 0 && result.AverageFps > 0);
             ApplyButton.Visibility = hasStableResult ? Visibility.Visible : Visibility.Collapsed;
             RunTestButton.Visibility = hasStableResult ? Visibility.Collapsed : Visibility.Visible;
-            RunTestButton.Content = hasStableResult ? "Run Test" : "Run Again";
+            RunTestButton.Content = hasStableResult ? "开始测试" : "再测一次";
             RunTestButton.IsEnabled = !hasStableResult;
         }
 
@@ -598,10 +628,10 @@ namespace Visuality
                 CapValue.Text = "-";
                 ApplyButton.IsEnabled = false;
                 ApplyButton.Visibility = Visibility.Collapsed;
-                FooterText.Text = "Close this helper or run the test again after the model settles.";
-                RecommendationText.Text = "No stable AI-loop sample was captured.";
+                FooterText.Text = "可以关闭此窗口，或等模型稳定后重新测试。";
+                RecommendationText.Text = "没有采集到稳定的 AI 循环样本。";
                 WarningText.Text = _report?.Recommendations.HasLimitedHardwareWarning == true
-                    ? $"Hardware notice: {_report.Recommendations.HardwareWarning}"
+                    ? $"硬件提示：{_report.Recommendations.HardwareWarning}"
                     : string.Empty;
                 WarningText.Visibility = _report?.Recommendations.HasLimitedHardwareWarning == true
                     ? Visibility.Visible
@@ -613,18 +643,18 @@ namespace Visuality
             CpuValue.Text = FormatPercent(_selectedResult.AverageCpuPercent);
             GpuValue.Text = _selectedResult.GpuAvailable ? FormatPercent(_selectedResult.AverageGpuPercent) : "N/A";
             int selectedCap = GetSuggestedCap(_selectedResult);
-            CapValue.Text = $"{selectedCap} FPS";
+            CapValue.Text = $"{selectedCap} 帧";
             ApplyButton.IsEnabled = _selectedResult.FrameCount > 0 && _selectedResult.AverageFps > 0;
             ApplyButton.Visibility = Visibility.Visible;
-            FooterText.Text = "Select Fastest, Balanced, or Lowest Resource, then apply that pair.";
+            FooterText.Text = "选择极速、均衡或最低占用方案，然后应用这组设置。";
 
             string prefix = GetSelectionTitle(_selectedResult, _report);
             string summary = CreateSelectionRecommendation(_selectedResult, _report).Summary;
             RecommendationText.Text =
-                $"{prefix}: {_selectedResult.ImageSize}px + {selectedCap} FPS cap. Full-speed AI-loop average was {_selectedResult.AverageFps:F0} FPS. {summary}";
+                $"{prefix}：{_selectedResult.ImageSize}px + 上限 {selectedCap} 帧。全速 AI 循环平均 {_selectedResult.AverageFps:F0} 帧。{summary}";
 
             WarningText.Text = _report.Recommendations.HasLimitedHardwareWarning
-                ? $"Hardware notice: {_report.Recommendations.HardwareWarning}"
+                ? $"硬件提示：{_report.Recommendations.HardwareWarning}"
                 : string.Empty;
             WarningText.Visibility = _report.Recommendations.HasLimitedHardwareWarning
                 ? Visibility.Visible
@@ -642,7 +672,7 @@ namespace Visuality
 
             stack.Children.Add(new TextBlock
             {
-                Text = result.FrameCount > 0 ? $"Full speed: {result.AverageFps:F0} avg FPS -> {cap} FPS cap" : "No stable sample",
+                Text = result.FrameCount > 0 ? $"全速：平均 {result.AverageFps:F0} 帧 → 上限 {cap} 帧" : "无稳定样本",
                 Foreground = new SolidColorBrush(Colors.White),
                 FontFamily = new FontFamily("Atkinson Hyperlegible"),
                 FontWeight = FontWeights.SemiBold,
@@ -653,8 +683,8 @@ namespace Visuality
             stack.Children.Add(new TextBlock
             {
                 Text = result.FrameCount > 0
-                    ? $"Pair: {result.ImageSize}px + {cap} FPS cap   CPU {FormatPercent(result.AverageCpuPercent)}   GPU {(result.GpuAvailable ? FormatPercent(result.AverageGpuPercent) : "N/A")}"
-                    : "Try again after the model finishes settling.",
+                    ? $"组合：{result.ImageSize}px + 上限 {cap} 帧   CPU {FormatPercent(result.AverageCpuPercent)}   GPU {(result.GpuAvailable ? FormatPercent(result.AverageGpuPercent) : "N/A")}"
+                    : "等模型稳定后再试一次。",
                 Foreground = new SolidColorBrush(Color.FromArgb(170, 255, 255, 255)),
                 FontFamily = new FontFamily("Atkinson Hyperlegible"),
                 FontSize = 11,
@@ -700,17 +730,17 @@ namespace Visuality
                 return badges;
 
             if (selected)
-                badges.Add(new ResultBadge("Selected", ThemeManager.ThemeColorLight));
+                badges.Add(new ResultBadge("已选", ThemeManager.ThemeColorLight));
 
             if (_report.IsFixedSizeModel && MatchesRecommendation(result, _report.Recommendation))
             {
-                badges.Add(new ResultBadge("Fixed Size - All Picks", Color.FromRgb(196, 181, 253)));
+                badges.Add(new ResultBadge("固定尺寸·全部方案", Color.FromRgb(196, 181, 253)));
                 return badges;
             }
 
             if (AllRecommendationModesUseSameResult(_report) && MatchesRecommendation(result, _report.Recommendations.Primary))
             {
-                badges.Add(new ResultBadge("All Picks", Color.FromRgb(255, 210, 122)));
+                badges.Add(new ResultBadge("全部方案", Color.FromRgb(255, 210, 122)));
                 return badges;
             }
 
@@ -721,7 +751,7 @@ namespace Visuality
             }
 
             if (MatchesRecommendation(result, _report.Recommendations.Primary))
-                badges.Add(new ResultBadge("Suggested", ThemeManager.ThemeColor));
+                badges.Add(new ResultBadge("推荐", ThemeManager.ThemeColor));
 
             return badges;
         }
@@ -755,11 +785,11 @@ namespace Visuality
         {
             return mode switch
             {
-                PerformanceRecommendationMode.FastestDetections => new ResultBadge("Fastest", Color.FromRgb(124, 199, 255)),
-                PerformanceRecommendationMode.Quality => new ResultBadge("Quality", Color.FromRgb(124, 199, 255)),
-                PerformanceRecommendationMode.LowestResources => new ResultBadge("Lowest", Color.FromRgb(94, 234, 212)),
-                PerformanceRecommendationMode.HighSpeed => new ResultBadge("High Speed", Color.FromRgb(94, 234, 212)),
-                _ => new ResultBadge("Balanced", Color.FromRgb(167, 139, 250))
+                PerformanceRecommendationMode.FastestDetections => new ResultBadge("极速", Color.FromRgb(124, 199, 255)),
+                PerformanceRecommendationMode.Quality => new ResultBadge("画质", Color.FromRgb(124, 199, 255)),
+                PerformanceRecommendationMode.LowestResources => new ResultBadge("最低占用", Color.FromRgb(94, 234, 212)),
+                PerformanceRecommendationMode.HighSpeed => new ResultBadge("高帧", Color.FromRgb(94, 234, 212)),
+                _ => new ResultBadge("均衡", Color.FromRgb(167, 139, 250))
             };
         }
 
@@ -805,13 +835,13 @@ namespace Visuality
         private static string GetSelectionTitle(PerformanceBenchmarkSizeResult result, PerformanceBenchmarkReport report)
         {
             if (AllRecommendationModesUseSameResult(report) && MatchesRecommendation(result, report.Recommendations.Primary))
-                return "All picks";
+                return "全部方案相同";
 
             var recommendation = GetMatchingRecommendation(result, report);
             if (recommendation != null)
-                return $"{recommendation.Label} pick";
+                return $"{recommendation.Label}方案";
 
-            return "Selected pair";
+            return "当前组合";
         }
 
         private static PerformanceRecommendation? GetMatchingRecommendation(
@@ -888,12 +918,12 @@ namespace Visuality
                 return;
 
             ApplyButton.IsEnabled = false;
-            FooterText.Text = "Applying selected size and FPS cap...";
+            FooterText.Text = "正在应用所选尺寸和帧率上限…";
 
             bool applied = await _mainWindow.ApplyPerformanceRecommendationAsync(CreateSelectionRecommendation(_selectedResult, _report));
             if (!applied)
             {
-                FooterText.Text = "Could not apply the selected pair. Model settings were left unchanged.";
+                FooterText.Text = "应用所选组合失败，模型设置未改动。";
                 ApplyButton.IsEnabled = true;
                 return;
             }
@@ -917,19 +947,19 @@ namespace Visuality
 
             bool canChangeImageSize = !report.IsFixedSizeModel && result.ImageSize != AimSettings.ImageSize;
             string summary = report.IsFixedSizeModel
-                ? "Fixed model locks image size. FPS cap still cuts heat."
+                ? "固定模型锁定了图像尺寸，帧率上限仍能降低发热。"
                 : result.ImageSize < AimSettings.ImageSize
-                    ? "Lower image size cuts load. Small or far targets can lose detail."
+                    ? "降低图像尺寸可减少占用，但小而远的目标可能丢失细节。"
                     : result.ImageSize > AimSettings.ImageSize
-                        ? "Higher image size can improve detail but costs more load."
-                        : "Keep image size. FPS cap cuts extra CPU/GPU work.";
+                        ? "提高图像尺寸能改善细节，但占用更高。"
+                        : "保持当前图像尺寸，靠帧率上限减少多余的 CPU/GPU 开销。";
 
             return new PerformanceRecommendation(
                 result.ImageSize,
                 PerformanceRecommendationBuilder.BuildFpsCap(result, report.Goal),
                 canChangeImageSize,
                 summary,
-                "Selected",
+                "已选择",
                 GetSelectedMode(report.Goal));
         }
 
@@ -1021,8 +1051,8 @@ namespace Visuality
             NoThanksButton.IsEnabled = false;
             RunTestButton.IsEnabled = false;
             ApplyButton.IsEnabled = false;
-            ProgressTitle.Text = "Stopping benchmark";
-            ProgressSubtitle.Text = "Restoring the loaded model before closing.";
+            ProgressTitle.Text = "正在停止性能测试";
+            ProgressSubtitle.Text = "关闭前恢复已加载的模型。";
             FooterText.Text = string.Empty;
             _benchmarkCancellation?.Cancel();
         }
